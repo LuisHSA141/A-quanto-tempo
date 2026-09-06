@@ -1,0 +1,98 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>141 // RPG EM PAUSA</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050505;color:#ddd;font-family:"Courier New",monospace}body{min-height:100vh;display:grid;place-items:center;overflow:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.17;background:repeating-linear-gradient(0deg,transparent 0 2px,#fff 3px,transparent 4px);animation:scan .3s steps(3) infinite}
+body:after{content:"";position:fixed;inset:0;z-index:49;pointer-events:none;background:radial-gradient(circle,transparent 30%,rgba(0,0,0,.3) 75%,#000 100%)}
+.noise{position:fixed;inset:-50%;z-index:51;opacity:.06;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:n .07s steps(2) infinite}
+.interface{width:min(1000px,93vw);padding:28px;position:relative;background:#0b0b0b;border:1px solid #444;box-shadow:0 0 70px #000,inset 0 0 90px #fff1;animation:frame 6s infinite}
+.corner{position:absolute;width:20px;height:20px;border-color:#aaa;border-style:solid}.c1{top:-1px;left:-1px;border-width:2px 0 0 2px}.c2{top:-1px;right:-1px;border-width:2px 2px 0 0}.c3{bottom:-1px;left:-1px;border-width:0 0 2px 2px}.c4{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.top{display:flex;justify-content:space-between;border-bottom:1px solid #333;padding-bottom:12px;color:#777;font-size:11px;letter-spacing:.18em}.dot{display:inline-block;width:7px;height:7px;background:#ccc;animation:b .4s steps(2) infinite}
+.logo-area{height:190px;display:grid;place-items:center}.logo{width:190px;height:190px;object-fit:contain;filter:grayscale(1) contrast(1.5);animation:logo 3s infinite}
+h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16em;text-shadow:2px 0 #777,-2px 0 #111;animation:title 2.5s infinite}.sub{text-align:center;margin-top:9px;color:#5d5d5d;font-size:10px;letter-spacing:.27em}
+.status{text-align:center;margin:22px 0 12px;color:#777;font-size:11px;letter-spacing:.12em}.status span{color:#ddd}
+.timer{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0 25px}.unit{padding:21px 8px 16px;text-align:center;border:1px solid #303030;background:linear-gradient(#191919,#0d0d0d);overflow:hidden;position:relative}.unit:after{content:"";position:absolute;top:0;left:-80%;width:55%;height:1px;background:#ddd;animation:sweep 1.8s linear infinite}
+.value{font-size:clamp(30px,6vw,63px);font-weight:bold;font-variant-numeric:tabular-nums}.label{margin-top:10px;color:#666;font-size:10px;letter-spacing:.2em}
+.meta{display:flex;justify-content:space-between;border-top:1px solid #292929;padding-top:13px;color:#555;font-size:9px;letter-spacing:.12em}.warn{color:#aaa;animation:b .8s steps(2) infinite}.footer{text-align:center;margin-top:14px;color:#3f3f3f;font-size:8px;letter-spacing:.22em}
+#cmd{display:none;position:fixed;inset:0;z-index:100;pointer-events:none}.cmd{position:absolute;left:7%;top:15%;width:min(700px,86vw);padding:15px;background:#050505;border:1px solid #aaa;box-shadow:10px 10px #fff1,0 0 45px #fff2;color:#ddd;font-size:12px;line-height:1.45;white-space:pre-wrap;animation:cin .06s steps(2),shake .16s steps(4) infinite}.cmd.r{left:auto;right:5%;top:61%}.cmd.l{top:auto;bottom:8%;left:17%}.head{color:#888;border-bottom:1px solid #444;padding-bottom:6px;margin-bottom:8px}
+@media(max-width:650px){.interface{padding:18px}.timer{grid-template-columns:repeat(2,1fr)}.logo-area{height:145px}.logo{width:145px;height:145px}.meta{flex-direction:column;gap:8px}.cmd{font-size:10px;left:4%;width:92vw}}
+@keyframes scan{to{transform:translateY(9px)}}@keyframes n{25%{transform:translate(5%,-3%)}50%{transform:translate(-4%,4%)}75%{transform:translate(4%,3%)}100%{transform:translate(-5%,-4%)}}@keyframes b{0%,35%{opacity:1}36%,100%{opacity:.2}}@keyframes sweep{to{left:160%}}@keyframes frame{0%,82%,100%{transform:translate(0)}83%{transform:translate(-3px,1px)}84%{transform:translate(4px,-1px)}85%{transform:translate(0)}}@keyframes logo{0%,68%,100%{transform:translate(0);clip-path:inset(0)}69%{transform:translate(-8px,2px);clip-path:inset(10% 0 65%)}70%{transform:translate(9px,-1px);clip-path:inset(67% 0 10%)}71%{transform:translate(0);clip-path:inset(0)}}@keyframes title{0%,77%,100%{transform:translate(0)}78%{transform:translate(-5px)}79%{transform:translate(5px)}80%{transform:translate(0)}}@keyframes cin{0%{opacity:0;transform:scale(.88) skewX(8deg)}20%{opacity:1;transform:scale(1.03) skewX(-2deg)}40%{transform:translate(-7px,3px)}60%{transform:translate(5px,-2px)}80%{transform:translate(-3px,1px)}100%{opacity:1;transform:scale(1)}}@keyframes shake{25%{margin-left:-5px}50%{margin-left:7px}75%{margin-left:-3px}}.cursor{display:inline-block;animation:b .12s steps(2) infinite}.cmd.collapse{animation:collapse .35s steps(4) forwards}@keyframes collapse{0%{opacity:1;clip-path:inset(0)}35%{transform:scaleX(1.15);clip-path:inset(45% 0)}70%{transform:scaleX(.25);clip-path:inset(48% 0)}100%{opacity:0;transform:scaleX(0);clip-path:inset(50% 0)}}
+</style></head><body><div class="noise"></div>
+<main class="interface"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+<div class="top"><div>141 // TEMPORAL MONITOR</div><div><i class="dot"></i> SIGNAL: UNSTABLE</div></div>
+<div class="logo-area"><img class="logo" src="logo.png" alt="Projeto 1.4.1"></div>
+<h1>RPG EM PAUSA</h1><div class="sub">CONEXÃO INTERROMPIDA // CONTAGEM TEMPORAL ATIVA</div>
+<div class="status" id="status">STATUS: <span>RECUPERANDO TIMESTAMP DO DEPLOY...</span></div>
+<section class="timer"><div class="unit"><div class="value" id="d">00</div><div class="label">DIAS</div></div><div class="unit"><div class="value" id="h">00</div><div class="label">HORAS</div></div><div class="unit"><div class="value" id="m">00</div><div class="label">MINUTOS</div></div><div class="unit"><div class="value" id="s">00</div><div class="label">SEGUNDOS</div></div></section>
+<div class="meta"><div id="boot">DEPLOY START: --</div><div class="warn" id="warn">⚠ SISTEMA: INTERFERÊNCIA DETECTADA</div></div><div class="footer">PROJECT 1.4.1 // VERCEL TEMPORAL MONITOR // ACCESS: READ ONLY</div></main><div id="cmd"></div>
+<script src="start-time.js"></script>
+<script>
+const CMDS=[
+String.raw`C:\> scan --deep
+X-M1R4 :: Unknown
+[!] handshake rejected`,
+String.raw`root@141:~# cat operators
+Whiskey | Daiquiri (out) | Æ
+ACCESS DENIED`,
+String.raw`C:\141\> locate --ghost
+Wild card :: Joker(out) :: Butterfly (out)
+packet=CORRUPTED`,
+String.raw`root@unknown:~# ./inject
+Chrono (K.I.A) // Vermouth // Z.B (K.I.A)
+temporal lock detected`,
+String.raw`C:\> whoami
+EL Miguel
+Odysseus(out?) :: Spartan (K.I.A) :: X-M1R4
+CONNECTION REFUSED`,
+String.raw`root@Æ:~# decrypt /141
+Whiskey // Wild card // Daiquiri (out) // Unknown
+ACCESS BLOCKED`,
+String.raw`C:\> bruteforce.exe
+Vermouth | Joker(out) | Chrono (K.I.A) | Butterfly (out)
+attempt=0412 FAILED`,
+String.raw`root@141:~# locate --ghost
+Z.B (K.I.A) :: EL Miguel :: Spartan (K.I.A)
+signal=0.004%`,
+String.raw`C:\> connect --silent
+Æ // X-M1R4 // Odysseus(out?)
+FIREWALL RESPONSE: ███`,
+String.raw`root@blackbox:~# sudo access 141
+Unknown :: Wild card :: Whiskey :: Vermouth
+AUTH TOKEN INVALID`
+];
+const boot = Number(window.TIMER_STARTED_AT || 0);
+const p=n=>String(n).padStart(2,"0");
+function render(){
+  if(!boot){document.getElementById("status").innerHTML='STATUS: <span>TIMESTAMP DO DEPLOY AUSENTE</span>';return;}
+  let x=Math.max(0,Math.floor((Date.now()-boot)/1000)),d=Math.floor(x/86400);x%=86400;
+  let h=Math.floor(x/3600);x%=3600;let m=Math.floor(x/60),s=x%60;
+  for(const [id,v] of [["d",d],["h",h],["m",m],["s",s]])document.getElementById(id).textContent=p(v);
+  document.getElementById("status").innerHTML='STATUS: <span>CONEXÃO INTERROMPIDA // PAUSA EM ANDAMENTO</span>';
+}
+function init(){
+  if(boot){
+    const q=new Date(boot);
+    document.getElementById("boot").textContent="DEPLOY START: "+q.toLocaleDateString("pt-BR")+" // "+q.toLocaleTimeString("pt-BR");
+    document.getElementById("warn").textContent="■ SISTEMA: MONITORAMENTO ATIVO";
+  }
+  render();
+}
+function showCmd(){
+  const layer=document.getElementById("cmd");
+  const box=document.createElement("div");
+  box.className="cmd "+["","r","l"][Math.floor(Math.random()*3)];
+  const text=CMDS[Math.floor(Math.random()*CMDS.length)];
+  const header=[String.raw`C:\141\TEMPORAL_BREACH.exe // REMOTE SHELL`,String.raw`C:\Windows\System32> intrusion.exe --target 141`,String.raw`root@141:~# ./bypass_temporal_lock`][Math.floor(Math.random()*3)];
+  box.innerHTML='<div class="head">'+header+'</div><div class="body"></div><div class="cursor">█</div>';
+  layer.innerHTML=""; layer.appendChild(box); layer.style.display="block";
+  let i=0; const body=box.querySelector(".body");
+  const iv=setInterval(()=>{ body.textContent=text.slice(0,++i); if(i>=text.length) clearInterval(iv); },2);
+  setTimeout(()=>{ box.classList.add("collapse"); },1800);
+  setTimeout(()=>{ clearInterval(iv); layer.style.display="none"; },2300);
+}
+function schedule(){
+  const delay=5000+Math.random()*10000;
+  setTimeout(()=>{showCmd();schedule()},delay);
+}
+setTimeout(showCmd,3000);
+init();setInterval(render,250);schedule();
+</script></body></html>

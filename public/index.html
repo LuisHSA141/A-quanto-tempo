@@ -1,4 +1,5 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>141 // RPG EM PAUSA</title>
+<link rel="icon" type="image/png" href="logo.png">
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050505;color:#ddd;font-family:"Courier New",monospace}body{min-height:100vh;display:grid;place-items:center;overflow:hidden}
 body:before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.17;background:repeating-linear-gradient(0deg,transparent 0 2px,#fff 3px,transparent 4px);animation:scan .3s steps(3) infinite}
@@ -16,6 +17,7 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
 #cmd{display:none;position:fixed;inset:0;z-index:100;pointer-events:none}.cmd{position:absolute;left:7%;top:15%;width:min(700px,86vw);padding:15px;background:#050505;border:1px solid #aaa;box-shadow:10px 10px #fff1,0 0 45px #fff2;color:#ddd;font-size:12px;line-height:1.45;white-space:pre-wrap;animation:cin .06s steps(2),shake .16s steps(4) infinite}.cmd.r{left:auto;right:5%;top:61%}.cmd.l{top:auto;bottom:8%;left:17%}.head{color:#888;border-bottom:1px solid #444;padding-bottom:6px;margin-bottom:8px}
 @media(max-width:650px){.interface{padding:18px}.timer{grid-template-columns:repeat(2,1fr)}.logo-area{height:145px}.logo{width:145px;height:145px}.meta{flex-direction:column;gap:8px}.cmd{font-size:10px;left:4%;width:92vw}}
 @keyframes scan{to{transform:translateY(9px)}}@keyframes n{25%{transform:translate(5%,-3%)}50%{transform:translate(-4%,4%)}75%{transform:translate(4%,3%)}100%{transform:translate(-5%,-4%)}}@keyframes b{0%,35%{opacity:1}36%,100%{opacity:.2}}@keyframes sweep{to{left:160%}}@keyframes frame{0%,82%,100%{transform:translate(0)}83%{transform:translate(-3px,1px)}84%{transform:translate(4px,-1px)}85%{transform:translate(0)}}@keyframes logo{0%,68%,100%{transform:translate(0);clip-path:inset(0)}69%{transform:translate(-8px,2px);clip-path:inset(10% 0 65%)}70%{transform:translate(9px,-1px);clip-path:inset(67% 0 10%)}71%{transform:translate(0);clip-path:inset(0)}}@keyframes title{0%,77%,100%{transform:translate(0)}78%{transform:translate(-5px)}79%{transform:translate(5px)}80%{transform:translate(0)}}@keyframes cin{0%{opacity:0;transform:scale(.88) skewX(8deg)}20%{opacity:1;transform:scale(1.03) skewX(-2deg)}40%{transform:translate(-7px,3px)}60%{transform:translate(5px,-2px)}80%{transform:translate(-3px,1px)}100%{opacity:1;transform:scale(1)}}@keyframes shake{25%{margin-left:-5px}50%{margin-left:7px}75%{margin-left:-3px}}.cursor{display:inline-block;animation:b .12s steps(2) infinite}.cmd.collapse{animation:collapse .35s steps(4) forwards}@keyframes collapse{0%{opacity:1;clip-path:inset(0)}35%{transform:scaleX(1.15);clip-path:inset(45% 0)}70%{transform:scaleX(.25);clip-path:inset(48% 0)}100%{opacity:0;transform:scaleX(0);clip-path:inset(50% 0)}}
+.st-kia{color:#ff4b4b}.st-out{color:#b980ff}.st-unk{color:#888}
 </style></head><body><div class="noise"></div>
 <main class="interface"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
 <div class="top"><div>141 // TEMPORAL MONITOR</div><div><i class="dot"></i> SIGNAL: UNSTABLE</div></div>
@@ -26,38 +28,30 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
 <div class="meta"><div id="boot">DEPLOY START: --</div><div class="warn" id="warn">⚠ SISTEMA: INTERFERÊNCIA DETECTADA</div></div><div class="footer">PROJECT 1.4.1 // VERCEL TEMPORAL MONITOR // ACCESS: READ ONLY</div></main><div id="cmd"></div>
 <script src="start-time.js"></script>
 <script>
+const KIA=" (K.I.A)",OUT=" (OUT)",OUTQ=" (OUT?)",UNK=" (???)";
+function T(t,c){return {t:t,c:c||""};}
+function kia(t){return T(t+KIA,"st-kia");}
+function out(t){return T(t+OUT,"st-out");}
+function outq(t){return T(t+OUTQ,"st-out");}
+function unk(t){return T(t+UNK,"st-unk");}
 const CMDS=[
-String.raw`C:\> scan --deep
-X-M1R4 :: Unknown
-[!] handshake rejected`,
-String.raw`root@141:~# cat operators
-Whiskey | Daiquiri (out) | Æ
-ACCESS DENIED`,
-String.raw`C:\141\> locate --ghost
-Wild card :: Joker(out) :: Butterfly (out)
-packet=CORRUPTED`,
-String.raw`root@unknown:~# ./inject
-Chrono (K.I.A) // Vermouth // Z.B (K.I.A)
-temporal lock detected`,
-String.raw`C:\> whoami
-EL Miguel
-Odysseus(out?) :: Spartan (K.I.A) :: X-M1R4
-CONNECTION REFUSED`,
-String.raw`root@Æ:~# decrypt /141
-Whiskey // Wild card // Daiquiri (out) // Unknown
-ACCESS BLOCKED`,
-String.raw`C:\> bruteforce.exe
-Vermouth | Joker(out) | Chrono (K.I.A) | Butterfly (out)
-attempt=0412 FAILED`,
-String.raw`root@141:~# locate --ghost
-Z.B (K.I.A) :: EL Miguel :: Spartan (K.I.A)
-signal=0.004%`,
-String.raw`C:\> connect --silent
-Æ // X-M1R4 // Odysseus(out?)
-FIREWALL RESPONSE: ███`,
-String.raw`root@blackbox:~# sudo access 141
-Unknown :: Wild card :: Whiskey :: Vermouth
-AUTH TOKEN INVALID`
+[T("C:\\> scan --deep\n[+] pinging node... timeout\n[+] pinging node... OK\n[+] scanning port 4141... closed\nanomaly flagged -> X-M1R4\n[+] scanning port 8091... open\n[+] checksum 9F2D... valid\nanomaly flagged -> "),unk("Unknown"),T("\n[!] handshake rejected")],
+[T("root@141:~# cat operators\n[SYS] indexing table...\n[SYS] reading row 01...\nentry -> Whiskey\n[SYS] reading row 02...\n[SYS] checksum mismatch, retry\nentry -> "),unk("Daiquiri"),T("\n[SYS] reading row 03...\nentry -> Æ\n[SYS] table locked\nACCESS DENIED")],
+[T("C:\\141\\> locate --ghost\n[+] triangulating signal...\n[+] signal weak, retrying\nghost trace -> Wild "),unk("card"),T("\n[+] triangulating signal...\nghost trace -> "),unk("Joker"),T("\n[+] signal lost\n[+] triangulating signal...\nghost trace -> "),out("Butterfly"),T("\npacket=CORRUPTED")],
+[T("root@unknown:~# ./inject\n[SYS] payload staged...\n[SYS] injecting shellcode...\ntarget -> "),kia("Chrono"),T("\n[SYS] injection partial\n[SYS] retry injection...\ntarget -> "),kia("Vermouth"),T("\n[SYS] kernel panic averted\ntarget -> "),kia("Z.B"),T("\ntemporal lock detected")],
+[T("C:\\> whoami\n[+] resolving identity...\n[+] identity match found\nEL Miguel\n[+] resolving identity...\n[+] partial match\n"),outq("Odysseus"),T("\n[+] resolving identity...\n"),kia("Spartan"),T("\n[+] resolving identity...\nX-M1R4\nCONNECTION REFUSED")],
+[T("root@Æ:~# decrypt /141\n[SYS] decrypt cycle 01...\nWhiskey\n[SYS] decrypt cycle 02...\nWild "),unk("card"),T("\n[SYS] decrypt cycle 03...\n"),unk("Daiquiri"),T("\n[SYS] decrypt cycle 04...\n"),unk("Unknown"),T("\n[SYS] decrypt cycle 05...\nÆ\nACCESS BLOCKED")],
+[T("C:\\> bruteforce.exe\n[+] attempt 0409 FAILED\n[+] attempt 0410 FAILED\ntarget -> "),kia("Vermouth"),T("\n[+] attempt 0411 FAILED\ntarget -> "),unk("Joker"),T("\n[+] attempt 0412 FAILED\ntarget -> "),kia("Chrono"),T("\n[+] attempt 0413 FAILED\ntarget -> "),out("Butterfly"),T("\nattempt=0412 FAILED")],
+[T("root@141:~# locate --ghost\n[SYS] scanning sector 01...\n[SYS] scanning sector 02...\nghost trace -> "),kia("Z.B"),T("\n[SYS] scanning sector 03...\nghost trace -> EL Miguel\n[SYS] scanning sector 04...\nghost trace -> "),kia("Spartan"),T("\nsignal=0.004%")],
+[T("C:\\> connect --silent\n[+] establishing tunnel...\n[+] tunnel unstable\nnode -> Æ\n[+] establishing tunnel...\nnode -> X-M1R4\n[+] establishing tunnel...\nnode -> "),outq("Odysseus"),T("\nFIREWALL RESPONSE: ███")],
+[T("root@blackbox:~# sudo access 141\n[SYS] permission check...\n[SYS] permission denied\ncredential -> "),unk("Unknown"),T("\n[SYS] permission check...\ncredential -> Wild "),unk("card"),T("\n[SYS] permission check...\ncredential -> Whiskey\n[SYS] permission check...\ncredential -> "),kia("Vermouth"),T("\nAUTH TOKEN INVALID")],
+[T("C:\\> grep -r \"roster\" /141\n[+] searching index...\nmatch -> "),kia("Ghost Honey"),T("\n[+] searching index...\nmatch -> Dazgaea\n[+] searching index...\nmatch -> Fatman\n[+] searching index...\nmatch -> "),kia("Naga"),T("\nindex=CORRUPTED")],
+[T("C:\\141\\> cat db_dump.json\n{\n  \"build\": \"1.4.1\",\n  \"checksum\": \"9F2A...\",\n  \"unit_02\": \"REDACTED\",\n  \"unit_04\": \"Dazgaea\",\n  \"unit_06\": \"REDACTED\",\n  \"unit_09\": \"Fatman\",\n  \"unit_10\": \"REDACTED\",\n  \"unit_11\": \""),kia("Naga"),T("\",\n  \"status\": \"PARSING...\"\n}\nERROR: fragment missing")],
+[T("root@141:~# tail -f roster.log\n[04:12:01] unit sync :: X-M1R4\n[04:12:02] unit sync :: OK\n[04:12:03] unit sync :: retry\n[04:12:04] unit sync :: "),kia("Ghost Honey"),T("\n[04:12:05] unit sync :: OK\n[04:12:06] unit sync :: "),kia("Spartan"),T("\n[04:12:07] unit sync :: retry\n[04:12:08] unit sync :: "),outq("Odysseus"),T("\n[04:12:09] stream interrupted")],
+[T("C:\\> decompile roster.dll\n...\nconst CHAR_02 = \"REDACTED\";\nconst CHAR_05 = \"REDACTED\";\nconst CHAR_07 = \"Wild "),unk("card"),T("\";\nconst CHAR_09 = \"REDACTED\";\nconst CHAR_12 = \""),out("Butterfly"),T("\";\nconst CHAR_14 = \"REDACTED\";\nconst CHAR_15 = \""),kia("Vermouth"),T("\";\n...\ndecompilation incomplete")],
+[T("root@unknown:~# fetch --entity Fatman\n[+] querying database...\n[+] partial index found\nquery :: Fatman\n[+] querying database...\nquery :: Dazgaea\nresponse: PARTIAL DATA RECEIVED")],
+[T("C:\\> python3 crack_roster.py --target 141\n[+] initializing brute session...\n[+] loading dictionary: ghost_ops.txt\n[0x0001] handshake sync... OK\n[0x0002] handshake sync... OK\n[0x0003] anomaly flagged -> X-M1R4\n[0x0004] handshake sync... OK\n[0x0005] checksum 4F2A9C1B... valid\n[0x0006] anomaly flagged -> Whiskey\n[0x0007] handshake sync... FAIL\n[0x0008] retry handshake... OK\n[0x0009] anomaly flagged -> "),unk("Daiquiri"),T("\n[0x000A] checksum 9B21FA02... valid\n[0x000B] handshake sync... OK\n[0x000C] anomaly flagged -> Æ // "),unk("Unknown"),T("\n[0x000D] checksum mismatch, retrying...\n[0x000E] anomaly flagged -> "),unk("Joker"),T("\n[0x000F] handshake sync... OK\n[0x0010] anomaly flagged -> Wild "),unk("card"),T("\n[0x0011] anomaly flagged -> "),out("Butterfly"),T("\n[0x0012] checksum 22FCA810... valid\n[0x0013] handshake sync... OK\n[0x0014] anomaly flagged -> "),kia("Chrono"),T("\n[0x0015] handshake sync... FAIL\n[0x0016] anomaly flagged -> "),kia("Vermouth"),T("\n[!] checksum mismatch at unit[08]\n[ABORTED] integrity compromised")],
+[T("root@blackbox:~# ./breach.sh 141\n[SYS] handshake attempt 1/5...\n[SYS] packet loss 2%\n[SYS] handshake attempt 2/5...\n[SYS] partial response received\n[SYS] decoding fragment 01... done\n[SYS] decoding fragment 02... done\n--- fragment recovered ---\nsubject: "),kia("Z.B"),T("\n[SYS] decoding fragment 03... done\n[SYS] signal noise increasing\nsubject: EL Miguel\n[SYS] decoding fragment 04... corrupted\n[SYS] retry fragment 04...\nsubject: "),outq("Odysseus"),T("\n[SYS] decoding fragment 05... done\n[SYS] signal noise increasing\nsubject: "),kia("Spartan"),T("\n[SYS] decoding fragment 06... done\nsubject: "),kia("Ghost Honey"),T("\n[SYS] signal noise increasing\nsubject: Dazgaea\n[SYS] decoding fragment 07... done\nsubject: Fatman\n[SYS] decoding fragment 08... corrupted\nsubject: "),kia("Naga"),T("\n[SYS] connection unstable\n[FAILED] trace lost")]
 ];
 const boot = Number(window.TIMER_STARTED_AT || 0);
 const p=n=>String(n).padStart(2,"0");
@@ -76,18 +70,41 @@ function init(){
   }
   render();
 }
+function flattenTokens(tokens){
+  const flat=[];
+  for(const tok of tokens){ for(const ch of tok.t){ flat.push({ch:ch,c:tok.c}); } }
+  return flat;
+}
+function escapeChar(ch){
+  if(ch==="&")return"&amp;";
+  if(ch==="<")return"&lt;";
+  if(ch===">")return"&gt;";
+  return ch;
+}
+function renderFlat(flat,upTo){
+  let html="",j=0;
+  const n=Math.min(upTo,flat.length);
+  while(j<n){
+    const c=flat[j].c;
+    let seg="";
+    while(j<n&&flat[j].c===c){ seg+=escapeChar(flat[j].ch); j++; }
+    html+= c? '<span class="'+c+'">'+seg+'</span>' : seg;
+  }
+  return html;
+}
 function showCmd(){
   const layer=document.getElementById("cmd");
   const box=document.createElement("div");
   box.className="cmd "+["","r","l"][Math.floor(Math.random()*3)];
-  const text=CMDS[Math.floor(Math.random()*CMDS.length)];
+  const flat=flattenTokens(CMDS[Math.floor(Math.random()*CMDS.length)]);
   const header=[String.raw`C:\141\TEMPORAL_BREACH.exe // REMOTE SHELL`,String.raw`C:\Windows\System32> intrusion.exe --target 141`,String.raw`root@141:~# ./bypass_temporal_lock`][Math.floor(Math.random()*3)];
   box.innerHTML='<div class="head">'+header+'</div><div class="body"></div><div class="cursor">█</div>';
   layer.innerHTML=""; layer.appendChild(box); layer.style.display="block";
   let i=0; const body=box.querySelector(".body");
-  const iv=setInterval(()=>{ body.textContent=text.slice(0,++i); if(i>=text.length) clearInterval(iv); },2);
-  setTimeout(()=>{ box.classList.add("collapse"); },1800);
-  setTimeout(()=>{ clearInterval(iv); layer.style.display="none"; },2300);
+  const iv=setInterval(()=>{ body.innerHTML=renderFlat(flat,++i); if(i>=flat.length) clearInterval(iv); },2);
+  const collapseAt=Math.max(1800, flat.length*2+900);
+  setTimeout(()=>{ box.classList.add("collapse"); },collapseAt);
+  setTimeout(()=>{ clearInterval(iv); layer.style.display="none"; },collapseAt+500);
 }
 function schedule(){
   const delay=5000+Math.random()*10000;

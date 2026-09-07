@@ -18,6 +18,36 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
 @media(max-width:650px){.interface{padding:18px}.timer{grid-template-columns:repeat(2,1fr)}.logo-area{height:145px}.logo{width:145px;height:145px}.meta{flex-direction:column;gap:8px}.cmd{font-size:10px;left:4%;width:92vw}}
 @keyframes scan{to{transform:translateY(9px)}}@keyframes n{25%{transform:translate(5%,-3%)}50%{transform:translate(-4%,4%)}75%{transform:translate(4%,3%)}100%{transform:translate(-5%,-4%)}}@keyframes b{0%,35%{opacity:1}36%,100%{opacity:.2}}@keyframes sweep{to{left:160%}}@keyframes frame{0%,82%,100%{transform:translate(0)}83%{transform:translate(-3px,1px)}84%{transform:translate(4px,-1px)}85%{transform:translate(0)}}@keyframes logo{0%,68%,100%{transform:translate(0);clip-path:inset(0)}69%{transform:translate(-8px,2px);clip-path:inset(10% 0 65%)}70%{transform:translate(9px,-1px);clip-path:inset(67% 0 10%)}71%{transform:translate(0);clip-path:inset(0)}}@keyframes title{0%,77%,100%{transform:translate(0)}78%{transform:translate(-5px)}79%{transform:translate(5px)}80%{transform:translate(0)}}@keyframes cin{0%{opacity:0;transform:scale(.88) skewX(8deg)}20%{opacity:1;transform:scale(1.03) skewX(-2deg)}40%{transform:translate(-7px,3px)}60%{transform:translate(5px,-2px)}80%{transform:translate(-3px,1px)}100%{opacity:1;transform:scale(1)}}@keyframes shake{25%{margin-left:-5px}50%{margin-left:7px}75%{margin-left:-3px}}.cursor{display:inline-block;animation:b .12s steps(2) infinite}.cmd.collapse{animation:collapse .35s steps(4) forwards}@keyframes collapse{0%{opacity:1;clip-path:inset(0)}35%{transform:scaleX(1.15);clip-path:inset(45% 0)}70%{transform:scaleX(.25);clip-path:inset(48% 0)}100%{opacity:0;transform:scaleX(0);clip-path:inset(50% 0)}}
 .st-kia{color:#ff4b4b}.st-out{color:#b980ff}.st-unk{color:#888}
+.inv-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.86);align-items:center;justify-content:center;padding:16px}
+.inv-overlay.show{display:flex;animation:invFade .12s ease}
+.inv-panel{width:min(760px,100%);background:#0b0b0b;border:1px solid #444;box-shadow:0 0 60px #000,inset 0 0 60px #fff1;position:relative;font-family:"Courier New",monospace;color:#ddd;overflow:hidden}
+@keyframes invFade{from{opacity:0}to{opacity:1}}
+.pixel-veil{position:absolute;inset:0;z-index:80;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(8,1fr);pointer-events:none}
+.pixel-veil .tile{animation:tileReveal 110ms steps(1) both}
+@keyframes tileReveal{0%{opacity:1;background:#050505}12%{opacity:1;background:#e8e8e8}55%{opacity:1;background:#050505}100%{opacity:0;background:#050505}}
+.inv-close{position:absolute;top:6px;right:10px;background:none;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1;z-index:2}
+.inv-close:hover{color:#fff}
+.inv-top{display:flex;border-bottom:2px solid #d1531c}
+.inv-tab{padding:10px 16px;background:#d1531c;color:#0b0b0b;font-size:11px;letter-spacing:.14em;font-weight:bold}
+.inv-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#2a2a2a}
+.inv-slot{background:#111;padding:22px 8px;text-align:center;cursor:pointer;border:1px solid transparent}
+.inv-slot:hover{background:#181818}
+.inv-slot.active{border-color:#d1531c;background:#161010}
+.inv-icon{font-size:28px;color:#ccc;margin-bottom:10px}
+.inv-slot.active .inv-icon{color:#d1531c}
+.inv-label{font-size:9px;letter-spacing:.1em;color:#888}
+.inv-slot.active .inv-label{color:#eee}
+.inv-detail{display:flex;gap:20px;padding:24px;align-items:flex-start;border-top:1px solid #2a2a2a}
+.inv-detail-icon{font-size:52px;color:#d1531c;width:70px;text-align:center;flex-shrink:0}
+.inv-detail-title{color:#d1531c;font-size:14px;letter-spacing:.1em;margin-bottom:10px;font-weight:bold}
+.inv-detail-desc{font-size:12px;line-height:1.6;color:#bbb;margin-bottom:16px}
+.inv-download{display:inline-block;font-size:11px;letter-spacing:.1em;color:#0b0b0b;background:#d1531c;padding:8px 14px;text-decoration:none;font-weight:bold}
+.inv-download:hover{background:#e46b34}
+@media(max-width:600px){.inv-detail{flex-direction:column;align-items:center;text-align:center}.inv-detail-icon{width:auto}}
+.logo-area.hit{animation:logoHit .28s steps(2)}
+@keyframes logoHit{0%{transform:translate(0,0);filter:brightness(1)}8%{transform:translate(-3px,1px);filter:brightness(1.8)}16%{transform:translate(3px,-1px);filter:brightness(1)}24%{transform:translate(-2px,-2px)}32%{transform:translate(2px,2px)}40%{transform:translate(-3px,1px)}48%{transform:translate(3px,-1px)}56%{transform:translate(-2px,2px)}64%{transform:translate(2px,-2px)}72%{transform:translate(-1px,1px)}80%{transform:translate(1px,-1px)}88%{transform:translate(-1px,0)}100%{transform:translate(0,0);filter:brightness(1)}}
+.inv-detail.tab-glitch{animation:tabGlitch .4s steps(9)}
+@keyframes tabGlitch{0%{opacity:1;transform:translate(0);filter:none;clip-path:inset(0)}10%{opacity:.15;transform:translate(-10px,3px);filter:contrast(2.6) brightness(2) invert(.15);clip-path:inset(30% 0 20% 0)}24%{opacity:1;transform:translate(8px,-3px);filter:none;clip-path:inset(0)}38%{opacity:.2;transform:translate(-6px,2px);filter:contrast(2.2);clip-path:inset(10% 0 60% 0)}52%{opacity:1;transform:translate(5px,-2px);filter:none;clip-path:inset(0)}66%{opacity:.4;transform:translate(-3px,1px);filter:contrast(1.6)}80%{opacity:1;transform:translate(2px,-1px);filter:none}100%{opacity:1;transform:translate(0);filter:none}}
 </style></head><body><div class="noise"></div>
 <main class="interface"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
 <div class="top"><div>141 // TEMPORAL MONITOR</div><div><i class="dot"></i> SIGNAL: UNSTABLE</div></div>
@@ -26,6 +56,26 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
 <div class="status" id="status">STATUS: <span>RECUPERANDO TIMESTAMP DO DEPLOY...</span></div>
 <section class="timer"><div class="unit"><div class="value" id="d">00</div><div class="label">DIAS</div></div><div class="unit"><div class="value" id="h">00</div><div class="label">HORAS</div></div><div class="unit"><div class="value" id="m">00</div><div class="label">MINUTOS</div></div><div class="unit"><div class="value" id="s">00</div><div class="label">SEGUNDOS</div></div></section>
 <div class="meta"><div id="boot">DEPLOY START: --</div><div class="warn" id="warn">⚠ SISTEMA: INTERFERÊNCIA DETECTADA</div></div><div class="footer">PROJECT 1.4.1 // VERCEL TEMPORAL MONITOR // ACCESS: READ ONLY</div></main><div id="cmd"></div>
+<div class="inv-overlay" id="invOverlay">
+  <div class="inv-panel">
+    <div class="pixel-veil" id="pixelVeil"></div>
+    <button class="inv-close" id="invClose" aria-label="Fechar">×</button>
+    <div class="inv-top"><div class="inv-tab">ARQUIVOS // PROJECT 1.4.1</div></div>
+    <div class="inv-slots">
+      <div class="inv-slot" data-item="0"><div class="inv-icon">▤</div><div class="inv-label">LIVRO DO JOGADOR</div></div>
+      <div class="inv-slot" data-item="1"><div class="inv-icon">✦</div><div class="inv-label">ESPECIALIZAÇÕES</div></div>
+      <div class="inv-slot" data-item="2"><div class="inv-icon">➤</div><div class="inv-label">O QUE ESTÁ A VIR</div></div>
+    </div>
+    <div class="inv-detail">
+      <div class="inv-detail-icon" id="invIcon">▤</div>
+      <div>
+        <div class="inv-detail-title" id="invTitle">LIVRO DO JOGADOR</div>
+        <div class="inv-detail-desc" id="invDesc"></div>
+        <a class="inv-download" id="invDownload" href="#" download>▸ BAIXAR ARQUIVO</a>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="start-time.js"></script>
 <script>
 const KIA=" (K.I.A)",OUT=" (OUT)",OUTQ=" (OUT?)",UNK=" (???)";
@@ -112,4 +162,60 @@ function schedule(){
 }
 setTimeout(showCmd,3000);
 init();setInterval(render,250);schedule();
+
+const invData=[
+  {icon:"▤",title:"LIVRO DO JOGADOR",desc:"O manual principal do Projeto 1.4.1, Não foi muito modificado, maiores mudanças visuais.",file:"livro-do-jogador.pdf"},
+  {icon:"✦",title:"ESPECIALIZAÇÕES",desc:"O compêndio de especializações, maiores mudanças no visual.",file:"especializacoes.pdf"},
+  {icon:"➤",title:"O QUE ESTÁ A VIR",desc:"Basicamente um roadmap, aqui tem mais informação que você procura.",file:"adicionando.pdf"}
+];
+function selectInv(idx){
+  document.querySelectorAll(".inv-slot").forEach((el,i)=>el.classList.toggle("active",i===idx));
+  const d=invData[idx];
+  document.getElementById("invIcon").textContent=d.icon;
+  document.getElementById("invTitle").textContent=d.title;
+  document.getElementById("invDesc").textContent=d.desc;
+  document.getElementById("invDownload").href=d.file;
+  const detail=document.querySelector(".inv-detail");
+  detail.classList.remove("tab-glitch");
+  void detail.offsetWidth;
+  detail.classList.add("tab-glitch");
+}
+document.querySelectorAll(".inv-slot").forEach((el,i)=>el.addEventListener("click",()=>selectInv(i)));
+document.getElementById("invClose").addEventListener("click",()=>{
+  document.getElementById("invOverlay").classList.remove("show");
+});
+document.getElementById("invOverlay").addEventListener("click",e=>{
+  if(e.target.id==="invOverlay") document.getElementById("invOverlay").classList.remove("show");
+});
+function buildPixelVeil(){
+  const veil=document.getElementById("pixelVeil");
+  veil.innerHTML="";
+  const cols=12,rows=8,total=cols*rows;
+  const order=[...Array(total).keys()];
+  for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  const spread=900;
+  for(let i=0;i<total;i++){
+    const tile=document.createElement("div");
+    tile.className="tile";
+    tile.style.animationDelay=Math.round((order[i]/total)*spread+Math.random()*30)+"ms";
+    veil.appendChild(tile);
+  }
+}
+let logoClicks=0,logoTimer=null;
+const logoArea=document.querySelector(".logo-area");
+document.querySelector(".logo").style.cursor="pointer";
+document.querySelector(".logo").addEventListener("click",()=>{
+  logoArea.classList.remove("hit");
+  void logoArea.offsetWidth;
+  logoArea.classList.add("hit");
+  logoClicks++;
+  clearTimeout(logoTimer);
+  logoTimer=setTimeout(()=>{logoClicks=0;},1500);
+  if(logoClicks>=4){
+    logoClicks=0;
+    selectInv(0);
+    buildPixelVeil();
+    document.getElementById("invOverlay").classList.add("show");
+  }
+});
 </script></body></html>

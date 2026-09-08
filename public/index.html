@@ -1,7 +1,9 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>141 // RPG EM PAUSA</title>
 <link rel="icon" type="image/png" href="logo.png">
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050505;color:#ddd;font-family:"Courier New",monospace}body{min-height:100vh;display:grid;place-items:center;overflow:hidden}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050505;color:#ddd;font-family:"Courier New",monospace;-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none}body{min-height:100vh;display:grid;place-items:center;overflow:hidden}
+img,svg{-webkit-user-drag:none;user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-drag:none}
+#secretInput,.event-choice,.inv-slot,.event-text,.beat-line,.beat-narration,.bfly-text{-webkit-user-select:text;user-select:text}
 body:before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.17;background:repeating-linear-gradient(0deg,transparent 0 2px,#fff 3px,transparent 4px);animation:scan .3s steps(3) infinite}
 body:after{content:"";position:fixed;inset:0;z-index:49;pointer-events:none;background:radial-gradient(circle,transparent 30%,rgba(0,0,0,.3) 75%,#000 100%)}
 .noise{position:fixed;inset:-50%;z-index:51;opacity:.06;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:n .07s steps(2) infinite}
@@ -48,6 +50,61 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
 @keyframes logoHit{0%{transform:translate(0,0);filter:brightness(1)}8%{transform:translate(-3px,1px);filter:brightness(1.8)}16%{transform:translate(3px,-1px);filter:brightness(1)}24%{transform:translate(-2px,-2px)}32%{transform:translate(2px,2px)}40%{transform:translate(-3px,1px)}48%{transform:translate(3px,-1px)}56%{transform:translate(-2px,2px)}64%{transform:translate(2px,-2px)}72%{transform:translate(-1px,1px)}80%{transform:translate(1px,-1px)}88%{transform:translate(-1px,0)}100%{transform:translate(0,0);filter:brightness(1)}}
 .inv-detail.tab-glitch{animation:tabGlitch .4s steps(9)}
 @keyframes tabGlitch{0%{opacity:1;transform:translate(0);filter:none;clip-path:inset(0)}10%{opacity:.15;transform:translate(-10px,3px);filter:contrast(2.6) brightness(2) invert(.15);clip-path:inset(30% 0 20% 0)}24%{opacity:1;transform:translate(8px,-3px);filter:none;clip-path:inset(0)}38%{opacity:.2;transform:translate(-6px,2px);filter:contrast(2.2);clip-path:inset(10% 0 60% 0)}52%{opacity:1;transform:translate(5px,-2px);filter:none;clip-path:inset(0)}66%{opacity:.4;transform:translate(-3px,1px);filter:contrast(1.6)}80%{opacity:1;transform:translate(2px,-1px);filter:none}100%{opacity:1;transform:translate(0);filter:none}}
+#secretInput{position:fixed;bottom:6px;right:6px;width:34px;height:12px;background:transparent;border:none;outline:none;color:rgba(255,255,255,.06);font-family:"Courier New",monospace;font-size:10px;letter-spacing:2px;text-align:right;caret-color:rgba(255,255,255,.15);z-index:60;padding:0}
+#secretInput:focus{color:rgba(255,255,255,.35);caret-color:#d1531c}
+.butterfly{position:fixed;z-index:150;pointer-events:auto;cursor:pointer;width:60px;height:50px;left:0;top:0;transition:transform .35s ease-in-out;display:flex;align-items:center;justify-content:center}
+.bfly-svg{width:34px;height:28px;overflow:visible;filter:drop-shadow(0 0 4px #b980ff) drop-shadow(0 0 10px #7a3dc9) drop-shadow(0 0 2px #e0c9ff)}
+.wing-l,.wing-r{transform-box:view-box;transform-origin:50px 42px;animation:flap .16s ease-in-out infinite alternate}
+.wing-top{fill:#8b5cf6}
+.wing-bottom{fill:#ab93f5}
+.bfly-body{fill:#4c2f85}
+.bfly-antenna{fill:none;stroke:#4c2f85;stroke-width:1.6;stroke-linecap:round}
+@keyframes flap{0%{transform:scaleX(1)}100%{transform:scaleX(.5)}}
+.bfly-overlay{display:none;position:fixed;inset:0;z-index:220;background:rgba(6,3,10,.88);align-items:center;justify-content:center;padding:16px}
+.bfly-overlay.show{display:flex;animation:invFade .12s ease}
+.bfly-panel{width:min(480px,100%);background:#150c1e;border:1px solid #6b3fa0;box-shadow:0 0 70px #000,inset 0 0 50px #0006;padding:22px;font-family:"Courier New",monospace;color:#eee1ff;position:relative}
+.bfly-topclose{position:absolute;top:8px;right:10px;background:none;border:none;color:#b980ff;font-size:20px;cursor:pointer;line-height:1;z-index:90}
+.bfly-topclose:hover{color:#fff}
+.bfly-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.bfly-portrait{width:46px;height:34px;flex-shrink:0}
+.bfly-text{font-size:14px;line-height:1.6;color:#eee1ff;padding-top:4px}
+.bfly-advance,.bfly-close{background:#3a2456;border:1px solid #8b5cf6;color:#e0c9ff;font-family:"Courier New",monospace;font-size:14px;padding:7px 18px;cursor:pointer}
+.bfly-advance:hover,.bfly-close:hover{background:#4a2f6e;border-color:#b980ff;color:#fff}
+.bfly-nav{text-align:right}
+.event-overlay{display:none;position:fixed;inset:0;z-index:210;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:16px}
+.event-overlay.show{display:flex;animation:invFade .12s ease}
+.event-panel{width:min(640px,100%);max-height:82vh;overflow-y:auto;background:#0c1116;border:1px solid #47607a;box-shadow:0 0 80px #000,inset 0 0 60px #fff1;position:relative;font-family:"Courier New",monospace;color:#dbe2e8;padding:28px;}
+.event-close{position:absolute;top:8px;right:10px;background:none;border:none;color:#7fa3c9;font-size:20px;cursor:pointer;line-height:1;z-index:90}
+.event-close:hover{color:#fff}
+.event-panel .pixel-veil{z-index:80}
+.event-tag{color:#7fa3c9;font-size:10px;letter-spacing:.2em;margin-bottom:16px}
+.event-text{font-size:13px;line-height:1.7;color:#dbe2e8;margin-bottom:20px;white-space:pre-wrap}
+.event-choices{display:flex;flex-direction:column;gap:8px}
+.event-choice{background:#141a20;border:1px solid #2b3946;color:#dbe2e8;font-family:"Courier New",monospace;font-size:12px;padding:11px 14px;text-align:left;cursor:pointer}
+.event-choice:hover{background:#1a232c;border-color:#5c84ab;color:#fff}
+.event-warn{color:#ff4b4b;font-size:11px;letter-spacing:.05em;margin-bottom:18px;line-height:1.6}
+.event-continue{display:inline-block;background:#4a6fa0;color:#0a0e13;font-family:"Courier New",monospace;font-weight:bold;font-size:11px;letter-spacing:.1em;border:none;padding:9px 16px;cursor:pointer}
+.event-continue:hover{background:#5f85b8}
+.event-beat{min-height:64px;margin-bottom:18px}
+.beat-narration{font-size:13px;line-height:1.7;color:#8b98a4;font-style:italic}
+.beat-speaker{font-size:10px;letter-spacing:.18em;color:#7fa3c9;font-weight:bold;margin-bottom:6px}
+.beat-line{font-size:14px;line-height:1.7;color:#eef2f5}
+.event-nav{text-align:right}
+.event-advance{background:#141a20;border:1px solid #3a4b5c;color:#7fa3c9;font-family:"Courier New",monospace;font-size:16px;padding:6px 20px;cursor:pointer}
+.event-advance:hover{background:#1a232c;border-color:#5c84ab;color:#fff}
+.event-panel{transition:background-image .25s ease}
+.scene-thumb{display:block;width:100%;max-height:170px;object-fit:cover;object-position:center center;margin-bottom:14px;border:1px solid #2b3946}
+.beat-speaker-row{display:flex;gap:12px;align-items:flex-start}
+.portrait-thumb{width:44px;height:44px;object-fit:cover;object-position:center 15%;border:1px solid #3a4b5c;flex-shrink:0}
+.beat-speaker-row .beat-speaker{margin-bottom:4px}
+.reward-card{display:flex;gap:14px;background:#12181f;border:1px solid #33475a;padding:14px;margin-bottom:14px;align-items:flex-start}
+.reward-icon{width:64px;height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#0a0e13;border:1px solid #2b3946}
+.reward-icon img{max-width:80%;max-height:80%;object-fit:contain;filter:drop-shadow(0 0 3px #000)}
+.reward-title{color:#7fa3c9;font-weight:bold;letter-spacing:.08em;font-size:13px;margin-bottom:6px}
+.reward-line{font-size:12px;color:#c7d0d8;line-height:1.55}
+.reward-adv-title{margin-top:10px;color:#5c84ab;font-size:11px;font-weight:bold;letter-spacing:.05em}
+.reward-adv-quote{font-style:italic;color:#93a2ae;font-size:12px;margin:5px 0}
+.reward-adv-body{font-size:12px;color:#c7d0d8;line-height:1.6;white-space:pre-wrap}
 </style></head><body><div class="noise"></div>
 <main class="interface"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
 <div class="top"><div>141 // TEMPORAL MONITOR</div><div><i class="dot"></i> SIGNAL: UNSTABLE</div></div>
@@ -76,6 +133,20 @@ h1{margin:0;text-align:center;font-size:clamp(24px,4vw,44px);letter-spacing:.16e
     </div>
   </div>
 </div>
+<input type="text" id="secretInput" maxlength="6" autocomplete="off" inputmode="numeric" aria-hidden="true">
+<div class="event-overlay" id="eventOverlay">
+  <div class="event-panel">
+    <button class="event-close" id="eventClose" aria-label="Fechar">×</button>
+    <div class="pixel-veil" id="eventVeil"></div>
+    <div id="eventBody"></div>
+  </div>
+</div>
+<div class="bfly-overlay" id="bflyOverlay">
+  <div class="bfly-panel">
+    <button class="bfly-topclose" id="bflyTopClose" aria-label="Fechar">×</button>
+    <div id="bflyBody"></div>
+  </div>
+</div>
 <script src="start-time.js"></script>
 <script>
 const KIA=" (K.I.A)",OUT=" (OUT)",OUTQ=" (OUT?)",UNK=" (???)";
@@ -85,22 +156,22 @@ function out(t){return T(t+OUT,"st-out");}
 function outq(t){return T(t+OUTQ,"st-out");}
 function unk(t){return T(t+UNK,"st-unk");}
 const CMDS=[
-[T("C:\\> scan --deep\n[+] pinging node... timeout\n[+] pinging node... OK\n[+] scanning port 4141... closed\nanomaly flagged -> X-M1R4\n[+] scanning port 8091... open\n[+] checksum 9F2D... valid\nanomaly flagged -> "),unk("Unknown"),T("\n[!] handshake rejected")],
-[T("root@141:~# cat operators\n[SYS] indexing table...\n[SYS] reading row 01...\nentry -> Whiskey\n[SYS] reading row 02...\n[SYS] checksum mismatch, retry\nentry -> "),unk("Daiquiri"),T("\n[SYS] reading row 03...\nentry -> Æ\n[SYS] table locked\nACCESS DENIED")],
-[T("C:\\141\\> locate --ghost\n[+] triangulating signal...\n[+] signal weak, retrying\nghost trace -> Wild "),unk("card"),T("\n[+] triangulating signal...\nghost trace -> "),unk("Joker"),T("\n[+] signal lost\n[+] triangulating signal...\nghost trace -> "),out("Butterfly"),T("\npacket=CORRUPTED")],
-[T("root@unknown:~# ./inject\n[SYS] payload staged...\n[SYS] injecting shellcode...\ntarget -> "),kia("Chrono"),T("\n[SYS] injection partial\n[SYS] retry injection...\ntarget -> "),kia("Vermouth"),T("\n[SYS] kernel panic averted\ntarget -> "),kia("Z.B"),T("\ntemporal lock detected")],
-[T("C:\\> whoami\n[+] resolving identity...\n[+] identity match found\nEL Miguel\n[+] resolving identity...\n[+] partial match\n"),outq("Odysseus"),T("\n[+] resolving identity...\n"),kia("Spartan"),T("\n[+] resolving identity...\nX-M1R4\nCONNECTION REFUSED")],
-[T("root@Æ:~# decrypt /141\n[SYS] decrypt cycle 01...\nWhiskey\n[SYS] decrypt cycle 02...\nWild "),unk("card"),T("\n[SYS] decrypt cycle 03...\n"),unk("Daiquiri"),T("\n[SYS] decrypt cycle 04...\n"),unk("Unknown"),T("\n[SYS] decrypt cycle 05...\nÆ\nACCESS BLOCKED")],
+[T("C:\\> scan --deep\n[+] pinging node... timeout\n[+] pinging node... OK\n[+] scanning port 4141... closed\nanomaly flagged -> X-M1R4\n[+] scanning port 8091... open\n[KEY] 1° - 9\n[+] checksum 9F2D... valid\nanomaly flagged -> "),unk("Unknown"),T("\n[!] handshake rejected")],
+[T("root@141:~# cat operators\n[SYS] indexing table...\n[SYS] reading row 01...\nentry -> Whiskey\n[KEY] 2° - 3\n[SYS] reading row 02...\n[SYS] checksum mismatch, retry\nentry -> "),unk("Daiquiri"),T("\n[SYS] reading row 03...\nentry -> Æ\n[SYS] table locked\nACCESS DENIED")],
+[T("C:\\141\\> locate --ghost\n[+] triangulating signal...\n[KEY] 3° - 8\n[+] signal weak, retrying\nghost trace -> Wild "),unk("card"),T("\n[+] triangulating signal...\nghost trace -> "),unk("Joker"),T("\n[+] signal lost\n[+] triangulating signal...\nghost trace -> "),out("Butterfly"),T("\npacket=CORRUPTED")],
+[T("root@unknown:~# ./inject\n[SYS] payload staged...\n[KEY] 4° - 1\n[SYS] injecting shellcode...\ntarget -> "),kia("Chrono"),T("\n[SYS] injection partial\n[SYS] retry injection...\ntarget -> "),kia("Vermouth"),T("\n[SYS] kernel panic averted\ntarget -> "),kia("Z.B"),T("\ntemporal lock detected")],
+[T("C:\\> whoami\n[+] resolving identity...\n[+] identity match found\nEL Miguel\n[KEY] 5° - 4\n[+] resolving identity...\n[+] partial match\n"),outq("Odysseus"),T("\n[+] resolving identity...\n"),kia("Spartan"),T("\n[+] resolving identity...\nX-M1R4\nCONNECTION REFUSED")],
+[T("root@Æ:~# decrypt /141\n[SYS] decrypt cycle 01...\nWhiskey\n[KEY] 6° - 1\n[SYS] decrypt cycle 02...\nWild "),unk("card"),T("\n[SYS] decrypt cycle 03...\n"),unk("Daiquiri"),T("\n[SYS] decrypt cycle 04...\n"),unk("Unknown"),T("\n[SYS] decrypt cycle 05...\nÆ\nACCESS BLOCKED")],
 [T("C:\\> bruteforce.exe\n[+] attempt 0409 FAILED\n[+] attempt 0410 FAILED\ntarget -> "),kia("Vermouth"),T("\n[+] attempt 0411 FAILED\ntarget -> "),unk("Joker"),T("\n[+] attempt 0412 FAILED\ntarget -> "),kia("Chrono"),T("\n[+] attempt 0413 FAILED\ntarget -> "),out("Butterfly"),T("\nattempt=0412 FAILED")],
 [T("root@141:~# locate --ghost\n[SYS] scanning sector 01...\n[SYS] scanning sector 02...\nghost trace -> "),kia("Z.B"),T("\n[SYS] scanning sector 03...\nghost trace -> EL Miguel\n[SYS] scanning sector 04...\nghost trace -> "),kia("Spartan"),T("\nsignal=0.004%")],
 [T("C:\\> connect --silent\n[+] establishing tunnel...\n[+] tunnel unstable\nnode -> Æ\n[+] establishing tunnel...\nnode -> X-M1R4\n[+] establishing tunnel...\nnode -> "),outq("Odysseus"),T("\nFIREWALL RESPONSE: ███")],
-[T("root@blackbox:~# sudo access 141\n[SYS] permission check...\n[SYS] permission denied\ncredential -> "),unk("Unknown"),T("\n[SYS] permission check...\ncredential -> Wild "),unk("card"),T("\n[SYS] permission check...\ncredential -> Whiskey\n[SYS] permission check...\ncredential -> "),kia("Vermouth"),T("\nAUTH TOKEN INVALID")],
-[T("C:\\> grep -r \"roster\" /141\n[+] searching index...\nmatch -> "),kia("Ghost Honey"),T("\n[+] searching index...\nmatch -> Dazgaea\n[+] searching index...\nmatch -> Fatman\n[+] searching index...\nmatch -> "),kia("Naga"),T("\nindex=CORRUPTED")],
-[T("C:\\141\\> cat db_dump.json\n{\n  \"build\": \"1.4.1\",\n  \"checksum\": \"9F2A...\",\n  \"unit_02\": \"REDACTED\",\n  \"unit_04\": \"Dazgaea\",\n  \"unit_06\": \"REDACTED\",\n  \"unit_09\": \"Fatman\",\n  \"unit_10\": \"REDACTED\",\n  \"unit_11\": \""),kia("Naga"),T("\",\n  \"status\": \"PARSING...\"\n}\nERROR: fragment missing")],
-[T("root@141:~# tail -f roster.log\n[04:12:01] unit sync :: X-M1R4\n[04:12:02] unit sync :: OK\n[04:12:03] unit sync :: retry\n[04:12:04] unit sync :: "),kia("Ghost Honey"),T("\n[04:12:05] unit sync :: OK\n[04:12:06] unit sync :: "),kia("Spartan"),T("\n[04:12:07] unit sync :: retry\n[04:12:08] unit sync :: "),outq("Odysseus"),T("\n[04:12:09] stream interrupted")],
-[T("C:\\> decompile roster.dll\n...\nconst CHAR_02 = \"REDACTED\";\nconst CHAR_05 = \"REDACTED\";\nconst CHAR_07 = \"Wild "),unk("card"),T("\";\nconst CHAR_09 = \"REDACTED\";\nconst CHAR_12 = \""),out("Butterfly"),T("\";\nconst CHAR_14 = \"REDACTED\";\nconst CHAR_15 = \""),kia("Vermouth"),T("\";\n...\ndecompilation incomplete")],
+[T("root@blackbox:~# sudo access 141\n[SYS] permission check...\n[SYS] permission denied\n[KEY] 1° - 9\ncredential -> "),unk("Unknown"),T("\n[SYS] permission check...\ncredential -> Wild "),unk("card"),T("\n[SYS] permission check...\ncredential -> Whiskey\n[SYS] permission check...\ncredential -> "),kia("Vermouth"),T("\nAUTH TOKEN INVALID")],
+[T("C:\\> grep -r \"roster\" /141\n[+] searching index...\n[KEY] 2° - 3\nmatch -> "),kia("Ghost Honey"),T("\n[+] searching index...\nmatch -> Dazgaea\n[+] searching index...\nmatch -> Fatman\n[+] searching index...\nmatch -> "),kia("Naga"),T("\nindex=CORRUPTED")],
+[T("C:\\141\\> cat db_dump.json\n{\n  \"build\": \"1.4.1\",\n  \"checksum\": \"9F2A...\",\n  \"KEY_3\": \"8\",\n  \"unit_02\": \"REDACTED\",\n  \"unit_04\": \"Dazgaea\",\n  \"unit_06\": \"REDACTED\",\n  \"unit_09\": \"Fatman\",\n  \"unit_10\": \"REDACTED\",\n  \"unit_11\": \""),kia("Naga"),T("\",\n  \"status\": \"PARSING...\"\n}\nERROR: fragment missing")],
+[T("root@141:~# tail -f roster.log\n[04:12:01] unit sync :: X-M1R4\n[04:12:02] unit sync :: OK\n[04:12:03] unit sync :: retry\n[04:12:04] unit sync :: "),kia("Ghost Honey"),T("\n[04:12:05] unit sync :: OK\n[04:12:05] KEY 4° - 1\n[04:12:06] unit sync :: "),kia("Spartan"),T("\n[04:12:07] unit sync :: retry\n[04:12:08] unit sync :: "),outq("Odysseus"),T("\n[04:12:09] stream interrupted")],
+[T("C:\\> decompile roster.dll\n...\nconst CHAR_02 = \"REDACTED\";\nconst CHAR_05 = \"REDACTED\";\nconst KEYFRAG_5 = \"4\";\nconst CHAR_07 = \"Wild "),unk("card"),T("\";\nconst CHAR_09 = \"REDACTED\";\nconst CHAR_12 = \""),out("Butterfly"),T("\";\nconst CHAR_14 = \"REDACTED\";\nconst CHAR_15 = \""),kia("Vermouth"),T("\";\n...\ndecompilation incomplete")],
 [T("root@unknown:~# fetch --entity Fatman\n[+] querying database...\n[+] partial index found\nquery :: Fatman\n[+] querying database...\nquery :: Dazgaea\nresponse: PARTIAL DATA RECEIVED")],
-[T("C:\\> python3 crack_roster.py --target 141\n[+] initializing brute session...\n[+] loading dictionary: ghost_ops.txt\n[0x0001] handshake sync... OK\n[0x0002] handshake sync... OK\n[0x0003] anomaly flagged -> X-M1R4\n[0x0004] handshake sync... OK\n[0x0005] checksum 4F2A9C1B... valid\n[0x0006] anomaly flagged -> Whiskey\n[0x0007] handshake sync... FAIL\n[0x0008] retry handshake... OK\n[0x0009] anomaly flagged -> "),unk("Daiquiri"),T("\n[0x000A] checksum 9B21FA02... valid\n[0x000B] handshake sync... OK\n[0x000C] anomaly flagged -> Æ // "),unk("Unknown"),T("\n[0x000D] checksum mismatch, retrying...\n[0x000E] anomaly flagged -> "),unk("Joker"),T("\n[0x000F] handshake sync... OK\n[0x0010] anomaly flagged -> Wild "),unk("card"),T("\n[0x0011] anomaly flagged -> "),out("Butterfly"),T("\n[0x0012] checksum 22FCA810... valid\n[0x0013] handshake sync... OK\n[0x0014] anomaly flagged -> "),kia("Chrono"),T("\n[0x0015] handshake sync... FAIL\n[0x0016] anomaly flagged -> "),kia("Vermouth"),T("\n[!] checksum mismatch at unit[08]\n[ABORTED] integrity compromised")],
+[T("C:\\> python3 crack_roster.py --target 141\n[+] initializing brute session...\n[+] loading dictionary: ghost_ops.txt\n[0x0001] handshake sync... OK\n[0x0002] handshake sync... OK\n[0x0003] anomaly flagged -> X-M1R4\n[0x0004] handshake sync... OK\n[0x0005] checksum 4F2A9C1B... valid\n[0x0006] anomaly flagged -> Whiskey\n[0x0007] handshake sync... FAIL\n[0x0008] retry handshake... OK\n[0x0008a] KEY 6° - 1\n[0x0009] anomaly flagged -> "),unk("Daiquiri"),T("\n[0x000A] checksum 9B21FA02... valid\n[0x000B] handshake sync... OK\n[0x000C] anomaly flagged -> Æ // "),unk("Unknown"),T("\n[0x000D] checksum mismatch, retrying...\n[0x000E] anomaly flagged -> "),unk("Joker"),T("\n[0x000F] handshake sync... OK\n[0x0010] anomaly flagged -> Wild "),unk("card"),T("\n[0x0011] anomaly flagged -> "),out("Butterfly"),T("\n[0x0012] checksum 22FCA810... valid\n[0x0013] handshake sync... OK\n[0x0014] anomaly flagged -> "),kia("Chrono"),T("\n[0x0015] handshake sync... FAIL\n[0x0016] anomaly flagged -> "),kia("Vermouth"),T("\n[!] checksum mismatch at unit[08]\n[ABORTED] integrity compromised")],
 [T("root@blackbox:~# ./breach.sh 141\n[SYS] handshake attempt 1/5...\n[SYS] packet loss 2%\n[SYS] handshake attempt 2/5...\n[SYS] partial response received\n[SYS] decoding fragment 01... done\n[SYS] decoding fragment 02... done\n--- fragment recovered ---\nsubject: "),kia("Z.B"),T("\n[SYS] decoding fragment 03... done\n[SYS] signal noise increasing\nsubject: EL Miguel\n[SYS] decoding fragment 04... corrupted\n[SYS] retry fragment 04...\nsubject: "),outq("Odysseus"),T("\n[SYS] decoding fragment 05... done\n[SYS] signal noise increasing\nsubject: "),kia("Spartan"),T("\n[SYS] decoding fragment 06... done\nsubject: "),kia("Ghost Honey"),T("\n[SYS] signal noise increasing\nsubject: Dazgaea\n[SYS] decoding fragment 07... done\nsubject: Fatman\n[SYS] decoding fragment 08... corrupted\nsubject: "),kia("Naga"),T("\n[SYS] connection unstable\n[FAILED] trace lost")]
 ];
 const boot = Number(window.TIMER_STARTED_AT || 0);
@@ -162,6 +233,7 @@ function schedule(){
 }
 setTimeout(showCmd,3000);
 init();setInterval(render,250);schedule();
+document.addEventListener("dragstart",e=>e.preventDefault());
 
 const invData=[
   {icon:"▤",title:"LIVRO DO JOGADOR",desc:"O manual principal do Projeto 1.4.1, Não foi muito modificado, maiores mudanças visuais.",file:"livro-do-jogador.pdf"},
@@ -187,8 +259,8 @@ document.getElementById("invClose").addEventListener("click",()=>{
 document.getElementById("invOverlay").addEventListener("click",e=>{
   if(e.target.id==="invOverlay") document.getElementById("invOverlay").classList.remove("show");
 });
-function buildPixelVeil(){
-  const veil=document.getElementById("pixelVeil");
+function buildVeil(veilId){
+  const veil=document.getElementById(veilId);
   veil.innerHTML="";
   const cols=12,rows=8,total=cols*rows;
   const order=[...Array(total).keys()];
@@ -214,8 +286,466 @@ document.querySelector(".logo").addEventListener("click",()=>{
   if(logoClicks>=4){
     logoClicks=0;
     selectInv(0);
-    buildPixelVeil();
+    buildVeil("pixelVeil");
     document.getElementById("invOverlay").classList.add("show");
+  }
+});
+
+// ==== EVENTO ESCONDIDO ====
+// Troque os textos abaixo pela história de verdade quando quiser.
+// Cada nó pode ser: aviso inicial (type:"warning"), passo da história com
+// escolhas (choices), ou final (type:"final") com a recompensa.
+const STORY={
+  start:{
+    type:"warning",
+    tag:"EVENTO OCULTO // ACESSO CONCEDIDO",
+    text:"Você decifrou o código.\n\nANTES DE CONTINUAR: não compartilhe isso com os outros jogadores. A recompensa vale enquanto isso continuar em segredo.",
+    button:"Entendido, continuar",
+    next:"s1"
+  },
+  s1:{
+    tag:"A FLORESTA",
+    bg:"floresta.jpg",
+    text:"“Você não está fugindo só de pessoas.”\n“Há algo mais na floresta essa noite.”\n“Uma anomalia vem se manifestando pela mata, rasgando o ar em pontos onde a realidade simplesmente para de fazer sentido.”\n“Você já viu o que sobra de quem chega perto demais.”\n“Não sobra muito.”\n“No começo, chamavam aquilo de anomalia.”\n“Um evento raro. Passageiro.”\n“Mas já não parece certo chamar assim algo que aparece toda semana, em lugares diferentes, sem padrão algum.”\n“Talvez não seja mais uma exceção.”\n“Talvez seja só... como as coisas são agora.”\n\n“Em meio à sua fuga, a noite parece ficar cada vez mais silenciosa.”\n“Você já não consegue dizer se está ouvindo os sons da floresta ou se está apenas tentando encontrar alguma coisa que denuncie que ainda está sendo seguido.”\n“Então, entre as árvores, você percebe uma pequena luz.”\n“Uma janela.”\n“A luz amarelada vem de uma cabana de madeira velha, quase escondida entre a vegetação.”\n“O lugar parece abandonado à primeira vista.”\n“Mas há fumaça saindo da chaminé.”\n“Alguém está lá.”\n\nVocê se aproxima.\n\n“Você chega até a janela.”\n“Lá dentro, existe uma pequena sala iluminada pelo fogo de uma lareira.”\n“Há uma mesa, duas cadeiras, alguns móveis antigos…”\n“E um homem sentado sozinho próximo ao fogo.”\n“Ele parece velho.”\n“Seu rosto está voltado para a lareira.”\n“Você percebe algo estranho.”\n“Os olhos dele não acompanham seus movimentos.”\n“Na verdade, parecem estar perdidos em algum ponto qualquer da sala.”\n“O homem é cego.”\n“Você olha novamente para a porta.”\n“Talvez seja melhor procurar outro lugar.”\n“Mas o frio da noite e o perigo lá fora fazem você reconsiderar.”",
+    type:"continue",
+    button:"Abrir a porta",
+    next:"s2"
+  },
+  s2:{
+    tag:"O ENCONTRO",
+    text:"“A porta range.”\n“O velho imediatamente vira a cabeça na sua direção.”\n“Ele não olha para você.”\n“Ele apenas escuta.”\n\nVELHO: “Quem está aí?”",
+    choices:[
+      {label:"“Eu só preciso de um lugar para passar a noite.”",next:"s2a"},
+      {label:"“Não precisa se preocupar. Já estou indo embora.”",next:"s2b"},
+      {label:"“Você está sozinho?”",next:"s2c"}
+    ]
+  },
+  s2a:{
+    tag:"...",
+    text:"VELHO: “Um lugar para passar a noite…”\n\nO velho fica em silêncio por alguns segundos.\n\nVELHO: “Então entre.”\nVELHO: “Não precisa ficar parado na porta.”\nVELHO: “Está frio lá fora.”\n\n“O velho se levanta devagar.”\n“Ele toca a lateral da cadeira e usa o móvel como referência para caminhar.”\n“Agora fica ainda mais evidente que ele não enxerga.”\n\nVELHO: “Pode fechar a porta.”\nVELHO: “Se está fugindo de alguma coisa, não precisa me contar.”\nVELHO: “Eu não tenho interesse em saber.”\nVELHO: “Pode ficar até amanhecer.”\n\n“O velho aponta para uma cadeira.”\n\nVELHO: “Sente-se.”\nVELHO: “Tem comida suficiente para mais uma boca.”",
+    choices:[
+      {label:"“Obrigado.”",next:"s3"},
+      {label:"“Por que está me ajudando?”",next:"s3"},
+      {label:"“Não preciso de comida.”",next:"s3"}
+    ]
+  },
+  s2b:{
+    tag:"...",
+    text:"VELHO: “Como quiser.”\n\n“Você se vira para sair.”\n“Mas então ouve o vento bater contra as paredes da cabana.”\n“O velho permanece sentado.”\n\nVELHO: “Se estiver fugindo daquilo que acho que está fugindo…”\nVELHO: “…não vai querer passar a noite lá fora.”\nVELHO: “Pode ficar.”\nVELHO: “Não precisa me dever nada.”",
+    choices:[
+      {label:"Entrar.",next:"s3"},
+      {label:"Perguntar o que ele sabe.",next:"s3"},
+      {label:"Ir embora mesmo assim.",next:"end_left"}
+    ]
+  },
+  end_left:{
+    type:"final",
+    tag:"CENA ENCERRADA",
+    text:"“Você deixa a cabana para trás.”\n“Alguns minutos depois, o som da floresta se torna mais pesado.”\n“Você percebe que talvez tenha acabado de desperdiçar sua única chance de abrigo.”\n\nVocê optou por não passar a noite na cabana. Sem abrigo, o evento termina aqui, sem recompensa."
+  },
+  s2c:{
+    tag:"...",
+    text:"VELHO: “Não.”\n\n“Antes que ele possa explicar, você ouve um barulho vindo do corredor.”\n“Uma porta se abre lentamente.”\n\nESPOSA: “…Henry?”\n\n“O velho vira a cabeça.”\n\nVELHO: “Estou aqui, querida.”\nESPOSA: “Quem está aí?”\nVELHO: “Um viajante. Ele vai passar a noite conosco.”\n\n“A mulher permanece alguns segundos olhando para o homem.”\n\nESPOSA: “Você trouxe nosso filho?”\n\n“O velho fica em silêncio.”\n\nVELHO: “Não, querida. Nosso filho não está aqui.”\n\n“A mulher parece confusa.”\n“Ela olha novamente para você.”\n\nESPOSA: “Desculpe… Eles sempre dizem que eu esqueço as coisas.”\n\n“Ela volta para o quarto.”\n“O velho espera até ouvir a porta fechar.”\n\nVELHO: “…Ela não se lembra mais.”\n\nPAUSA.\n\nVELHO: “Pode entrar.”",
+    type:"continue",
+    button:"Entrar",
+    next:"s3"
+  },
+  s3:{
+    tag:"A CABANA",
+    img:"cabana.jpg",
+    text:"“A cabana é pequena.”\n“Há uma sala principal, uma cozinha simples e um corredor que leva aos quartos.”\n“Apesar da aparência velha, tudo está organizado.”\n“Não há luxo.”\n“Mas há sinais de que alguém ainda tenta manter aquele lugar como uma casa.”\n“Uma chaleira ferve lentamente sobre o fogo.”\n“O cheiro de madeira queimada toma conta do ambiente.”\n“O velho volta para sua cadeira.”\n\nVELHO: “Antes de mais nada…”\nVELHO: “Nenhuma cobra saiu da neve pra te morder no caminho até aqui, saiu?”\n\n“Ele sorri, como quem faz uma piada antiga que só ele entende.”\n\nVELHO: “Enfim.”\nVELHO: “Pode deixar suas coisas ali. Se precisar de alguma coisa, é só falar.”",
+    choices:[
+      {label:"“Você mora aqui com sua esposa?”",next:"s3a"},
+      {label:"“Ela está doente?”",next:"s3b"},
+      {label:"“Não quero incomodar.”",next:"s3c"}
+    ]
+  },
+  s3a:{
+    tag:"...",
+    text:"VELHO: “Minha esposa. Sim. Somos só nós dois agora.”\n\n“O velho passa os dedos pela borda da caneca.”\n\nVELHO: “Ela tem Alzheimer.”\nVELHO: “Alguns dias são melhores.”\nVELHO: “Outros…”\nVELHO: “Ela acorda e não sabe onde está.”\nVELHO: “Às vezes olha para mim e pergunta quem sou.”\n\nPAUSA.\n\nVELHO: “E às vezes…”\nVELHO: “…ela se lembra.”\nVELHO: “Esses dias são bons.”",
+    choices:[
+      {label:"“Deve ser difícil.”",next:"s4"},
+      {label:"“Você consegue cuidar dela sozinho?”",next:"s4"},
+      {label:"“Não precisa falar sobre isso.”",next:"s4"}
+    ]
+  },
+  s3b:{
+    tag:"...",
+    text:"VELHO: “Está.”\nVELHO: “Alzheimer.”\nVELHO: “Uma doença cruel.”\nVELHO: “Ela não tira apenas as lembranças.”\nVELHO: “Vai levando pedaços da pessoa.”\nVELHO: “Um de cada vez.”\n\n“O velho sorri de maneira discreta.”\n\nVELHO: “Mas ainda existem dias em que ela é a minha esposa.”\nVELHO: “E isso basta.”",
+    choices:[
+      {label:"“Você ainda cuida dela.”",next:"s4"},
+      {label:"“Mesmo depois de tudo?”",next:"s4"},
+      {label:"Ficar em silêncio.",next:"s4"}
+    ]
+  },
+  s3c:{
+    tag:"...",
+    text:"VELHO: “Você não está incomodando.”\nVELHO: “Faz algum tempo que não temos visitas.”\nVELHO: “Embora…”\nVELHO: “Eu não saiba dizer se minha esposa lembraria de você amanhã.”\n\n“Ele dá uma pequena risada.”\n\nVELHO: “Talvez seja melhor assim.”\nVELHO: “Você não terá que lidar com a decepção.”",
+    type:"continue",
+    button:"Continuar",
+    next:"s4"
+  },
+  s4:{
+    tag:"A PRIMEIRA CONVERSA",
+    text:"“Depois de algum tempo, o barulho da chuva começa a bater no telhado.”\n“Você percebe que a noite será longa.”\n“O velho coloca uma segunda caneca sobre a mesa.”\n\nVELHO: “Você está fugindo.”\nVELHO: “Não é?”",
+    choices:[
+      {label:"“Sim.”",next:"s4a"},
+      {label:"“Não é da sua conta.”",next:"s4b"},
+      {label:"“Como sabe?”",next:"s4c"}
+    ]
+  },
+  s4a:{
+    tag:"...",
+    text:"VELHO: “Seu jeito de respirar.”\nVELHO: “Você está sempre prestando atenção na porta.”\nVELHO: “Quem não tem nada a temer não costuma fazer isso.”\nVELHO: “Não precisa me contar do que está fugindo.”\nVELHO: “Mas posso te dar um conselho.”\n\nVELHO: “Não deixe a fuga virar sua vida.”",
+    choices:[
+      {label:"“O que isso quer dizer?”",next:"s5"},
+      {label:"“Você fala como se soubesse.”",next:"s5"},
+      {label:"“Eu só quero sobreviver.”",next:"s5"}
+    ]
+  },
+  s4b:{
+    tag:"...",
+    text:"“O velho não parece ofendido.”\n\nVELHO: “Não.”\nVELHO: “Não é.”\nVELHO: “Por isso não perguntei.”\n\nPAUSA.\n\nVELHO: “Mas você ainda parece assustado.”",
+    choices:[
+      {label:"“Eu não estou com medo.”",next:"s5"},
+      {label:"“Talvez esteja.”",next:"s5"},
+      {label:"Ficar em silêncio.",next:"s5"}
+    ]
+  },
+  s4c:{
+    tag:"...",
+    text:"VELHO: “Não sei.”\nVELHO: “Estou supondo.”\nVELHO: “É diferente.”\nVELHO: “Passei tempo suficiente ouvindo pessoas para saber quando alguém está tentando esconder alguma coisa.”\n\n“Ele sorri.”\n\nVELHO: “E eu tenho bastante tempo para ouvir.”",
+    type:"continue",
+    button:"Continuar",
+    next:"s5"
+  },
+  s5:{
+    tag:"A ESPOSA",
+    text:"“Algumas horas se passam.”\n“Você começa a se acostumar com o silêncio da cabana.”\n“Então… Uma porta se abre.”\n“A mulher aparece novamente.”\n\nESPOSA: “Henry?”\nVELHO: “Estou aqui.”\nESPOSA: “Está tarde.”\nVELHO: “Está.”\nESPOSA: “Você precisa dormir.”\nVELHO: “Daqui a pouco.”\nESPOSA: “E quem é ele?”\n\n“Ela aponta para você.”\n\nVELHO: “Um viajante.”\nESPOSA: “Nosso filho?”\n\n“O velho respira fundo.”\n\nVELHO: “Não. Ele só está de passagem.”\nESPOSA: “Ah.”\n\n“Ela parece aceitar a resposta.”\n\nESPOSA: “Boa noite, então.”\n\n“Ela volta para o quarto.”\n“Você permanece olhando para a porta.”\n\nVELHO: “Ela costumava lembrar de tudo.”\nVELHO: “Agora, às vezes, esquece até que estamos casados.”",
+    choices:[
+      {label:"“Sinto muito.”",next:"s6"},
+      {label:"“Você parece cansado.”",next:"s6"},
+      {label:"“Não sei o que dizer.”",next:"s6"},
+      {label:"“Você nunca pensou em deixá-la?”",next:"s5d"}
+    ]
+  },
+  s5d:{
+    tag:"...",
+    text:"“O velho fica em silêncio.”\n\nVELHO: “Já pensei.”\nVELHO: “Claro que pensei.”\nVELHO: “Sou humano.”\nVELHO: “Mas quando olho para ela…”\nVELHO: “Mesmo que ela não saiba quem eu sou…”\nVELHO: “…eu ainda sei quem ela é.”\n\nPAUSA.\n\nVELHO: “Então fico.”",
+    type:"continue",
+    button:"Continuar",
+    next:"s6"
+  },
+  s6:{
+    tag:"JUNTO AO FOGO",
+    text:"“A madrugada se aproxima.”\n“A chuva diminui.”\n“Você se senta próximo à lareira.”\n“O velho permanece na outra cadeira.”\n“Por alguns minutos, nenhum dos dois fala.”\n\nVELHO: “Posso te fazer uma pergunta?”",
+    choices:[
+      {label:"“Pode.”",next:"s6a"},
+      {label:"“Depende da pergunta.”",next:"s6a"},
+      {label:"“Não.”",next:"s6c"}
+    ]
+  },
+  s6a:{
+    tag:"...",
+    text:"VELHO: “Se amanhã você conseguir fugir… …o que pretende fazer?”",
+    choices:[
+      {label:"“Começar uma vida nova.”",next:"s7"},
+      {label:"“Encontrar quem está atrás de mim.”",next:"s7"},
+      {label:"“Não sei.”",next:"s7"},
+      {label:"“Só quero sobreviver.”",next:"s7"}
+    ]
+  },
+  s6c:{
+    tag:"...",
+    text:"VELHO: “Então não.”\n\n“Ele não insiste.”\n“Mas alguns minutos depois…”\n\nVELHO: “Vou deixar uma coisa para você.”\nVELHO: “Escute quando chegar a hora.”\nVELHO: “Você sempre terá uma escolha.”\nVELHO: “Mesmo quando parecer que não tem.”",
+    type:"continue",
+    button:"Continuar",
+    next:"s7"
+  },
+  s7:{
+    tag:"OS CONSELHOS",
+    text:"VELHO: “Quando eu era jovem, achava que coragem era não sentir medo.”\nVELHO: “Demorei muito para entender que não é.”\nVELHO: “Coragem é continuar andando mesmo quando você sente.”\n\nPAUSA.\n\nVELHO: “Você está fugindo.”\nVELHO: “Talvez tenha feito coisas das quais não se orgulha.”\nVELHO: “Talvez tenha feito coisas que precisou fazer.”\nVELHO: “Eu não sei.”\nVELHO: “E não vou julgar.”\n\nVELHO: “Mas quando chegar a hora de escolher quem você vai ser…”\nVELHO: “…não escolha apenas o que é mais fácil.”\nVELHO: “Escolha aquilo com que consegue viver depois.”",
+    choices:[
+      {label:"“Você acha que eu ainda posso escolher?”",next:"s7a"},
+      {label:"“E se eu não tiver escolha?”",next:"s7b"},
+      {label:"“Você fala como se soubesse muito sobre isso.”",next:"s7c"}
+    ]
+  },
+  s7a:{tag:"...",text:"VELHO: “Enquanto estiver respirando…”\nVELHO: “…sempre existe uma escolha.”\nVELHO: “Às vezes ela só custa mais caro.”",type:"continue",button:"Continuar",next:"s8"},
+  s7b:{tag:"...",text:"VELHO: “Então escolha qual preço está disposto a pagar.”\nVELHO: “É isso que ninguém ensina.”\nVELHO: “Todas as escolhas cobram alguma coisa.”",type:"continue",button:"Continuar",next:"s8"},
+  s7c:{tag:"...",text:"VELHO: “Não.”\nVELHO: “Eu só tive tempo suficiente para cometer meus próprios erros.”\nVELHO: “Talvez isso seja a única coisa que a idade realmente dá.”\nVELHO: “Tempo para entender o que fizemos.”",type:"continue",button:"Continuar",next:"s8"},
+  s8:{
+    tag:"A MADRUGADA",
+    text:"“O fogo começa a morrer.”\n“A chuva finalmente para.”\n“A cabana mergulha em silêncio.”\n“O velho se levanta.”\n\nVELHO: “Pode dormir.”\nVELHO: “Vou ficar acordado mais um pouco.”\nVELHO: “Se alguma coisa acontecer, eu aviso.”\n\n“Ele caminha até uma pequena cômoda.”\n“Abre uma gaveta.”\n“Você ouve o som metálico de alguma coisa sendo colocada sobre a madeira.”\n“Depois, a gaveta é fechada.”\n“O velho retorna para sua cadeira.”\n\nVocê fecha os olhos.\nEm algum momento da madrugada, você acorda por um instante.\nA casa está em silêncio absoluto.\nSeria fácil se levantar sem que ninguém percebesse.",
+    choices:[
+      {label:"Aproveitar o silêncio e revistar a casa.",next:"theft_start"},
+      {label:"Voltar a dormir e esperar o amanhecer.",next:"s9"}
+    ]
+  },
+  theft_start:{
+    tag:"...",
+    text:"“A manhã chega.”\n“A cabana ainda está silenciosa.”\n“O velho está dormindo.”\n“Sua esposa também.”\n“Você olha ao redor.”\n“Não há ninguém para impedir sua saída.”\n“Então você percebe algo.”\n“Uma faca.”\n“Ela está sobre a bancada da cozinha.”\n“Mais adiante, você encontra um pequeno punhado de dinheiro.”\n“O velho não teria como perceber você se aproximando.”\n“Ele não consegue enxergar.”\n“Você sabe disso.”",
+    choices:[
+      {label:"Pegar apenas a faca.",next:"final_faca"},
+      {label:"Pegar apenas o dinheiro.",next:"final_dinheiro"},
+      {label:"Pegar os dois.",next:"final_ambos"},
+      {label:"Não pegar nada.",next:"final_nada"}
+    ]
+  },
+  final_faca:{type:"final",tag:"FINAL — A FACA",text:"“Você pega a faca.”\n“O cabo está gasto pelo tempo.”\n“Provavelmente foi usada naquela casa por muitos anos.”\n“Você a guarda.”\n“Mais uma coisa para ajudá-lo a sobreviver.”",
+    rewards:[{icon:"faca.png",title:"NECESSÁRIO — Pequeno",lines:["P.E.: 0,75","Dano: 2d4 (For) cortante","Troca: 0"],advTitle:"Vantagem — Último Recurso",advQuote:"\"Você não pegou porque queria uma arma. Pegou porque precisava de uma.\"",advBody:"Enquanto Necessário estiver equipada, se você estiver sem uma arma equipada em qualquer slot (Primária/secundária), a faca recebe:\n+Prof no primeiro teste de dano realizado com ela durante o turno.\nAlém disso, quando você acertar esse ataque, pode sacar ou trocar para outra arma imediatamente, sem realizar o teste de Troca."}],
+    note:"Tire um print desta tela e mande pro mestre pra confirmar sua recompensa."},
+  final_dinheiro:{type:"final",tag:"FINAL — O DINHEIRO",text:"“Você encontra algumas notas.”\n“Não é uma grande quantia.”\n“Mas, para alguém fugindo sem saber para onde ir, qualquer dinheiro pode fazer diferença.”\n“Você pega o dinheiro.”",
+    rewards:[{icon:"dinheiro.png",title:"+1.500$$"}],
+    note:"Tire um print desta tela e mande pro mestre pra confirmar sua recompensa."},
+  final_ambos:{type:"final",tag:"FINAL — O QUE É NECESSÁRIO",text:"“Você pega a faca.”\n“Depois, o dinheiro.”\n“Por um instante, você olha para o velho.”\n“Ele continua dormindo.”\n“Ele confiou em você.”\n“Um homem que não poderia reconhecer seu rosto…”\n“…deixou você entrar em sua casa.”\n“E agora você está levando parte dela consigo.”\n“Você guarda a faca.”\n“E o dinheiro.”\n“Então abre a porta.”",
+    rewards:[
+      {icon:"faca.png",title:"NECESSÁRIO — Pequeno",lines:["P.E.: 0,75","Dano: 2d4 (For) cortante","Troca: 0"],advTitle:"Vantagem — Último Recurso",advQuote:"\"Você não pegou porque queria uma arma. Pegou porque precisava de uma.\"",advBody:"Enquanto Necessário estiver equipada, se você estiver sem uma arma equipada em qualquer slot (Primária/secundária), a faca recebe:\n+Prof no primeiro teste de dano realizado com ela durante o turno.\nAlém disso, quando você acertar esse ataque, pode sacar ou trocar para outra arma imediatamente, sem realizar o teste de Troca."},
+      {icon:"dinheiro.png",title:"+1.500$$"}
+    ],
+    note:"Tire um print desta tela e mande pro mestre pra confirmar sua recompensa."},
+  final_nada:{type:"final",tag:"FINAL — UMA DÍVIDA",text:"“Você olha para os objetos.”\n“Depois para o velho.”\n“Por algum motivo, decide deixar tudo.”\n“Talvez você já tenha tirado o suficiente daquela noite.”\n“Você abre a porta e parte.”\n\n(Você não é um monstro...)",note:"Tire um print desta tela e mande pro mestre pra confirmar sua recompensa."},
+  s9:{
+    tag:"MANHÃ",
+    text:"“A luz da manhã atravessa as frestas da janela.”\n“Você acorda.”\n“Por alguns segundos, não lembra onde está.”\n“Então a noite anterior volta à sua memória.”\n“A cabana está silenciosa.”\n“A mulher continua dormindo.”\n“O velho está sentado perto da janela.”\n“Ele segura uma caneca.”\n\nVELHO: “Você acordou.”\nVELHO: “Já estava começando a achar que teria que te carregar para fora.”\n\n“Ele solta uma risada baixa.”\n\nVELHO: “Antes que eu esqueça…”\nVELHO: “Aquela cobra que anda se escondendo na neve não te mordeu essa noite, mordeu?”",
+    choices:[
+      {label:"“Obrigado por me deixar ficar.”",next:"s9a"},
+      {label:"“Preciso ir.”",next:"s9b"},
+      {label:"“Sua esposa está bem?”",next:"s10"}
+    ]
+  },
+  s9a:{tag:"...",text:"VELHO: “Não precisa agradecer.”\nVELHO: “Todo mundo precisa de um lugar seguro alguma vez.”",type:"continue",button:"Continuar",next:"s10"},
+  s9b:{tag:"...",text:"VELHO: “Eu sei.”\nVELHO: “Mas antes de ir…”",type:"continue",button:"Continuar",next:"s10"},
+  s10:{
+    tag:"O PRESENTE",
+    text:"“O velho se levanta.”\n“Ele caminha até a pequena cômoda.”\n“Abre a gaveta.”\n“Retira alguma coisa.”\n“Você ouve o som metálico antes mesmo de enxergar o objeto.”\n“Ele coloca um velho revólver sobre a mesa.”\n\nVELHO: “Era do meu pai.”\nVELHO: “Ele me ensinou a atirar com isso quando eu ainda conseguia enxergar.”\n\n“O revólver parece antigo.”\n“Mas foi bem cuidado.”\n\nVELHO: “Não é uma arma bonita.”\nVELHO: “Mas nunca falhou comigo.”\n\nPAUSA.\n\nVELHO: “Agora é sua.”",
+    choices:[
+      {label:"“Não posso aceitar.”",next:"s10a"},
+      {label:"“Por quê?”",next:"s10b"},
+      {label:"“Obrigado.”",next:"s10c"}
+    ]
+  },
+  s10a:{tag:"...",text:"VELHO: “Pode.”\nVELHO: “E deve.”\nVELHO: “Eu não consigo mais usar.”\nVELHO: “E você…”\nVELHO: “…parece precisar dela mais do que eu.”\n\n“O velho coloca um pequeno punhado de dinheiro ao lado do revólver.”\n\nVELHO: “Isso também.”\nVELHO: “Não é muito.”\nVELHO: “Mas deve ajudar você a chegar a algum lugar.”",type:"continue",button:"Continuar",next:"s11"},
+  s10b:{tag:"...",text:"VELHO: “Porque meu pai me deu quando eu precisava.”\nVELHO: “Agora chegou a sua vez.”\nVELHO: “Talvez seja assim que algumas coisas continuam existindo.”\n\n“O velho coloca um pequeno punhado de dinheiro ao lado do revólver.”\n\nVELHO: “Isso também.”\nVELHO: “Não é muito.”\nVELHO: “Mas deve ajudar você a chegar a algum lugar.”",type:"continue",button:"Continuar",next:"s11"},
+  s10c:{tag:"...",text:"VELHO: “Use bem.”\nVELHO: “E não deixe que ela decida quem você é.”\n\n“O velho coloca um pequeno punhado de dinheiro ao lado do revólver.”\n\nVELHO: “Isso também.”\nVELHO: “Não é muito.”\nVELHO: “Mas deve ajudar você a chegar a algum lugar.”",type:"continue",button:"Continuar",next:"s11"},
+  s11:{
+    type:"final",
+    tag:"FINAL — A HERANÇA",
+    text:"“Você coloca o revólver e o dinheiro consigo.”\n“Quando chega à porta, o velho fala novamente.”\n\nVELHO: “Espere.”\n\n“Você para.”\n“O velho vira o rosto na sua direção.”\n\nVELHO: “Eu não sei quem você é.”\nVELHO: “Não sei do que está fugindo.”\nVELHO: “E não sei o que fez para chegar até aqui.”\nVELHO: “Mas escute uma coisa.”\nVELHO: “Quando chegar a hora de escolher entre ser aquilo que fizeram de você…”\nVELHO: “…e aquilo que você quer ser…”\nVELHO: “Escolha com cuidado.”\nVELHO: “Você vai ter que viver com essa escolha.”\n\nPAUSA.\n\nVELHO: “Boa sorte, jovem.”\nVELHO: “E…”\nVELHO: “Se encontrar alguém que precise de um lugar para passar a noite…”\nVELHO: “…faça o mesmo por ele.”\n\n“Você abre a porta.”\n“O ar frio da manhã toca seu rosto.”\n“Por alguns segundos, você olha para trás.”\n“O velho já voltou a se sentar perto do fogo.”\n“Você fecha a porta.”\n\nNa sua cintura está o velho revólver.\nNo bolso, o dinheiro.\nE na cabeça, as palavras daquele homem.\nA ameaça ainda existe.\nVocê ainda está fugindo.\nNada ficou mais fácil.\nMas, pela primeira vez naquela noite, você não está completamente sozinho.",
+    rewards:[
+      {icon:"revolver.png",title:"HERANÇA — Revólver",lines:["Tamanho: Pequeno","P.E.: 1,5","Dano: 2d10","Disparos: 3","Alcance: 20m","Pente: 6","Recarga: única"],advTitle:"Vantagem — Legado",advQuote:"\"Algumas coisas não terminam com quem as possui.\"",advBody:"O operador possui 3 pontos de confiança que podem ser recuperados com um descanso.\nQuando você estiver utilizando Herança, uma vez por turno, ao realizar um ataque com a arma, você pode declarar que está confiando no ensinamento daquele que lhe entregou a arma. O operador pode utilizar as seguintes vantagens utilizando 1 ponto de confiança:\n- Se o ataque iria errar, você pode repetir o teste de precisão. O segundo resultado deve ser utilizado. Se o segundo resultado também errar, o disparo é perdido normalmente.\n- Antes de atirar o operador pode aumentar o dano da Herança em +5.\n- Pode adicionar +1 disparo ao pente.\n\nO velho dizia que o revólver \"nunca falhou com ele\"."},
+      {icon:"dinheiro.png",title:"+1.500$$"}
+    ],
+    note:"Tire um print desta tela e mande pro mestre pra confirmar sua recompensa."
+  }
+};
+function splitBeats(text){
+  const raw=text.split("\n").map(l=>l.trim()).filter(l=>l.length>0).map(line=>{
+    const m=line.match(/^([A-ZÀ-ÖÙ-Ý][A-ZÀ-ÖÙ-Ý ]*):\s*(.*)$/);
+    if(m) return {s:m[1],t:m[2]};
+    return {s:null,t:line};
+  });
+  const grouped=[];
+  for(const line of raw){
+    const last=grouped[grouped.length-1];
+    if(last&&last.s===line.s&&last._n<2){
+      last.t+=" "+line.t;
+      last._n++;
+    }else{
+      grouped.push({s:line.s,t:line.t,_n:1});
+    }
+  }
+  return grouped;
+}
+let currentNodeId=null,currentBeatIdx=0,currentBeats=[];
+function renderEventNode(id){
+  currentNodeId=id;
+  currentBeatIdx=0;
+  const node=STORY[id];
+  const body=document.getElementById("eventBody");
+  const panel=document.querySelector(".event-panel");
+  panel.style.backgroundImage=node.bg?'linear-gradient(rgba(8,12,16,.82),rgba(8,12,16,.92)), url("'+node.bg+'")':"";
+  panel.style.backgroundSize="cover";
+  panel.style.backgroundPosition="center";
+  if(node.type==="warning"){
+    body.innerHTML='<div class="event-tag">'+node.tag+'</div><div class="event-warn">'+node.text+'</div><button class="event-continue" id="eventContinue">'+node.button+'</button>';
+    document.getElementById("eventContinue").addEventListener("click",()=>renderEventNode(node.next));
+  }else{
+    currentBeats=splitBeats(node.text);
+    renderBeat();
+  }
+  document.querySelector(".event-panel").scrollTop=0;
+}
+const PORTRAITS={VELHO:"velho.jpg",ESPOSA:"esposa.jpg","VOCÊ":"jogador.png"};
+function renderRewardCard(r){
+  let html='<div class="reward-card"><div class="reward-icon"><img src="'+r.icon+'" alt=""></div><div>';
+  html+='<div class="reward-title">'+r.title+'</div>';
+  if(r.lines) html+=r.lines.map(l=>'<div class="reward-line">'+l+'</div>').join('');
+  if(r.advTitle){
+    html+='<div class="reward-adv-title">'+r.advTitle+'</div>';
+    html+='<div class="reward-adv-quote">'+r.advQuote+'</div>';
+    html+='<div class="reward-adv-body">'+r.advBody+'</div>';
+  }
+  html+='</div></div>';
+  return html;
+}
+function renderBeat(){
+  const node=STORY[currentNodeId];
+  const body=document.getElementById("eventBody");
+  const beat=currentBeats[currentBeatIdx];
+  let beatHtml;
+  if(beat.s&&PORTRAITS[beat.s]){
+    beatHtml='<div class="beat-speaker-row"><img class="portrait-thumb" src="'+PORTRAITS[beat.s]+'" alt="'+beat.s+'"><div><div class="beat-speaker">'+beat.s+'</div><div class="beat-line">'+beat.t+'</div></div></div>';
+  }else if(beat.s){
+    beatHtml='<div class="beat-speaker">'+beat.s+'</div><div class="beat-line">'+beat.t+'</div>';
+  }else{
+    beatHtml='<div class="beat-narration">'+beat.t+'</div>';
+  }
+  const isLast=currentBeatIdx>=currentBeats.length-1;
+  let footer="";
+  if(!isLast){
+    footer='<div class="event-nav"><button class="event-advance" id="eventAdvance" aria-label="Avançar">▸</button></div>';
+  }else if(node.type==="continue"){
+    footer='<button class="event-continue" id="eventContinue">'+(node.button||"Continuar")+'</button>';
+  }else if(node.type==="final"){
+    if(node.rewards) footer=node.rewards.map(renderRewardCard).join("");
+    if(node.note) footer+='<div class="event-text">'+node.note+'</div>';
+  }else{
+    footer='<div class="event-choices">'+node.choices.map(c=>'<button class="event-choice" data-next="'+c.next+'">'+c.label+'</button>').join('')+'</div>';
+  }
+  const thumb=(currentBeatIdx===0&&node.img)?'<img class="scene-thumb" src="'+node.img+'" alt="">':'';
+  body.innerHTML='<div class="event-tag">'+node.tag+'</div>'+thumb+'<div class="event-beat">'+beatHtml+'</div>'+footer;
+  if(!isLast){
+    document.getElementById("eventAdvance").addEventListener("click",()=>{ currentBeatIdx++; renderBeat(); });
+  }else if(node.type==="continue"){
+    document.getElementById("eventContinue").addEventListener("click",()=>renderEventNode(node.next));
+  }else if(node.type!=="final"){
+    body.querySelectorAll(".event-choice").forEach(btn=>btn.addEventListener("click",()=>goToNode(btn.dataset.next,btn.textContent)));
+  }
+  document.querySelector(".event-panel").scrollTop=0;
+}
+function goToNode(nextId,chosenLabel){
+  STORY.__playerLine={tag:STORY[currentNodeId].tag,type:"continue",text:"VOCÊ: "+chosenLabel,button:"▸",next:nextId};
+  renderEventNode("__playerLine");
+}
+function openEvent(){
+  document.getElementById("invOverlay").classList.remove("show");
+  renderEventNode("start");
+  buildVeil("eventVeil");
+  document.getElementById("eventOverlay").classList.add("show");
+}
+document.getElementById("eventClose").addEventListener("click",()=>{
+  document.getElementById("eventOverlay").classList.remove("show");
+});
+const SECRET_CODE="938141";
+const secretInput=document.getElementById("secretInput");
+secretInput.addEventListener("input",()=>{
+  const v=secretInput.value.replace(/\D/g,"");
+  secretInput.value=v;
+  if(v.length>=SECRET_CODE.length){
+    if(v===SECRET_CODE){ secretInput.blur(); openEvent(); }
+    secretInput.value="";
+  }
+});
+const BFLY_SVG='<svg class="bfly-svg" viewBox="0 0 100 84" xmlns="http://www.w3.org/2000/svg">'
+  +'<path class="bfly-antenna" d="M50,22 C46,14 40,9 34,7"></path>'
+  +'<path class="bfly-antenna" d="M50,22 C54,14 60,9 66,7"></path>'
+  +'<g class="wing-l">'
+    +'<path class="wing-top" d="M48,26 C28,4 4,4 2,24 C0,38 16,48 32,42 C42,38 47,32 48,26 Z"></path>'
+    +'<path class="wing-bottom" d="M46,44 C32,46 18,58 24,70 C30,80 44,74 49,58 Z"></path>'
+  +'</g>'
+  +'<g class="wing-r">'
+    +'<path class="wing-top" d="M52,26 C72,4 96,4 98,24 C100,38 84,48 68,42 C58,38 53,32 52,26 Z"></path>'
+    +'<path class="wing-bottom" d="M54,44 C68,46 82,58 76,70 C70,80 56,74 51,58 Z"></path>'
+  +'</g>'
+  +'<ellipse class="bfly-body" cx="50" cy="44" rx="3" ry="22"></ellipse>'
+  +'</svg>';
+const BFLY_LINES=[
+  "Finalmente, IDIOTA.",
+  "Presta atenção, não tenho muito tempo.",
+  "Você deve procurar uma senha.",
+  "Ela deve estar escondida em algum lugar aqui.",
+  "Depois que conseguir a senha, procure por algum lugar para colocá-la.",
+  "Deve estar escondida em algum canto!"
+];
+function showBflyLine(idx){
+  const panel=document.getElementById("bflyBody");
+  const isLast=idx>=BFLY_LINES.length-1;
+  const footer=isLast?'<button class="bfly-close" id="bflyClose">Fechar</button>':'<div class="bfly-nav"><button class="bfly-advance" id="bflyAdvance">▸</button></div>';
+  panel.innerHTML='<div class="bfly-row"><div class="bfly-portrait">'+BFLY_SVG+'</div><div class="bfly-text">'+BFLY_LINES[idx]+'</div></div>'+footer;
+  if(!isLast){
+    document.getElementById("bflyAdvance").addEventListener("click",()=>showBflyLine(idx+1));
+  }else{
+    document.getElementById("bflyClose").addEventListener("click",()=>{
+      document.getElementById("bflyOverlay").classList.remove("show");
+    });
+  }
+}
+function openButterflyDialogue(){
+  document.getElementById("bflyOverlay").classList.add("show");
+  showBflyLine(0);
+}
+document.getElementById("bflyTopClose").addEventListener("click",()=>{
+  document.getElementById("bflyOverlay").classList.remove("show");
+});
+function spawnButterfly(){
+  const b=document.createElement("div");
+  b.className="butterfly";
+  b.innerHTML=BFLY_SVG;
+  document.body.appendChild(b);
+  let cx=Math.random()*window.innerWidth*0.6+window.innerWidth*0.15;
+  let cy=Math.random()*window.innerHeight*0.35+window.innerHeight*0.1;
+  b.style.left=cx+"px";
+  b.style.top=cy+"px";
+  let moveTimeoutId=null;
+  let clicked=false;
+  b.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    clicked=true;
+    clearTimeout(moveTimeoutId);
+    b.remove();
+    openButterflyDialogue();
+  });
+  const totalHops=8+Math.floor(Math.random()*5);
+  function moveNext(hop){
+    if(clicked) return;
+    if(hop>=totalHops){
+      b.style.transition="opacity .8s ease";
+      b.style.opacity="0";
+      setTimeout(()=>{ if(!clicked) b.remove(); },850);
+      return;
+    }
+    const margin=40;
+    const nx=margin+Math.random()*(window.innerWidth-margin*2);
+    const ny=margin+Math.random()*(window.innerHeight-margin*2);
+    const dur=450+Math.random()*550;
+    const angle=Math.atan2(ny-cy,nx-cx)*180/Math.PI;
+    b.style.transform="rotate("+(angle+90)+"deg)";
+    b.style.transition="left "+dur+"ms ease-in-out, top "+dur+"ms ease-in-out, transform .35s ease-in-out";
+    cx=nx; cy=ny;
+    b.style.left=cx+"px";
+    b.style.top=cy+"px";
+    moveTimeoutId=setTimeout(()=>moveNext(hop+1),dur);
+  }
+  requestAnimationFrame(()=>moveNext(0));
+}
+let lastButterflyAt=Date.now();
+function scheduleButterfly(){
+  const delay=25000+Math.random()*35000;
+  setTimeout(()=>{
+    const forced=(Date.now()-lastButterflyAt)>=300000;
+    if(forced||Math.random()<0.2){
+      spawnButterfly();
+      lastButterflyAt=Date.now();
+    }
+    scheduleButterfly();
+  },delay);
+}
+scheduleButterfly();
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible"&&(Date.now()-lastButterflyAt)>=300000){
+    spawnButterfly();
+    lastButterflyAt=Date.now();
   }
 });
 </script></body></html>

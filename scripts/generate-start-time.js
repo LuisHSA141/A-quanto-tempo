@@ -7,9 +7,9 @@ const path = require('path');
 // 10 min (porque ele já estava parado por esse tempo antes da atualização),
 // defina os valores abaixo ANTES de commitar. Depois desse deploy, volte
 // tudo pra 0 de novo pro próximo update resetar normal.
-const OFFSET_DAYS = 1;
-const OFFSET_HOURS = 4;
-const OFFSET_MINUTES = 10;
+const OFFSET_DAYS = 2;
+const OFFSET_HOURS = 12;
+const OFFSET_MINUTES = 34;
 
 const output = path.join(__dirname, '..', 'public', 'start-time.js');
 const offsetMs = (OFFSET_DAYS * 86400 + OFFSET_HOURS * 3600 + OFFSET_MINUTES * 60) * 1000;

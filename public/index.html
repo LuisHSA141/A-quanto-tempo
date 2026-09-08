@@ -689,6 +689,7 @@ document.getElementById("bflyTopClose").addEventListener("click",()=>{
   document.getElementById("bflyOverlay").classList.remove("show");
 });
 function spawnButterfly(){
+  if(document.querySelector(".butterfly")) return;
   const b=document.createElement("div");
   b.className="butterfly";
   b.innerHTML=BFLY_SVG;
@@ -730,22 +731,25 @@ function spawnButterfly(){
   requestAnimationFrame(()=>moveNext(0));
 }
 let lastButterflyAt=Date.now();
+const BFLY_MIN_GAP=60000;
+function tryButterfly(force){
+  const elapsed=Date.now()-lastButterflyAt;
+  if(elapsed<BFLY_MIN_GAP) return;
+  const forced=force||elapsed>=300000;
+  if(forced||Math.random()<0.2){
+    spawnButterfly();
+    lastButterflyAt=Date.now();
+  }
+}
 function scheduleButterfly(){
   const delay=25000+Math.random()*35000;
   setTimeout(()=>{
-    const forced=(Date.now()-lastButterflyAt)>=300000;
-    if(forced||Math.random()<0.2){
-      spawnButterfly();
-      lastButterflyAt=Date.now();
-    }
+    tryButterfly(false);
     scheduleButterfly();
   },delay);
 }
 scheduleButterfly();
 document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState==="visible"&&(Date.now()-lastButterflyAt)>=300000){
-    spawnButterfly();
-    lastButterflyAt=Date.now();
-  }
+  if(document.visibilityState==="visible") tryButterfly(true);
 });
 </script></body></html>
